@@ -1,0 +1,192 @@
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center h-16">
+      <!-- Left side - Logo -->
+      <div class="flex-shrink-0">
+        <a href="/" class="flex items-center space-x-2">
+          <span class="text-xl font-bold text-gray-900 font-sansita">SoundClone</span>
+        </a>
+      </div>
+
+      <!-- Center - Search Bar -->
+      <div class="flex-1 flex justify-center ml-20">
+        <div class="w-96">
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Search music, artists, albums..."
+              class="w-10/12 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side - Navigation and User -->
+      <div class="flex items-center space-x-2">
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex space-x-2">
+          <a href="/" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            Home
+          </a>
+          <a href="/discover" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            Discover
+          </a>
+          <a href="/library" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            Library
+          </a>
+          <a href="/playlists" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            Playlists
+          </a>
+        </nav>
+
+         <!-- Notification icon-->
+        @if(isLoggedIn){
+          <div class="relative notification-dropdown">
+            <button
+              (click)="toggleNotificationDropdown()"
+              class="pl-5 text-gray-700 hover:text-purple-600 transition-colors duration-200 relative">
+             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="M411 262.862V215c0-69.822-46.411-129.001-110-148.33V45c0-24.813-20.187-45-45-45s-45 20.187-45 45v21.67C147.41 85.999 101 145.177 101 215v47.862c0 61.332-23.378 119.488-65.827 163.756A14.999 14.999 0 0 0 46 452h136.509c6.968 34.192 37.272 60 73.491 60 36.22 0 66.522-25.808 73.491-60H466a15 15 0 0 0 10.827-25.382C434.378 382.35 411 324.193 411 262.862zM241 45c0-8.271 6.729-15 15-15s15 6.729 15 15v15.728c-4.937-.476-9.94-.728-15-.728s-10.063.252-15 .728zm15 437c-19.555 0-36.228-12.541-42.42-30h84.84c-6.192 17.459-22.865 30-42.42 30zM78.33 422C112.491 376.208 131 320.792 131 262.862V215c0-68.925 56.075-125 125-125s125 56.075 125 125v47.862c0 57.93 18.509 113.346 52.671 159.138zM451 215c0 8.284 6.716 15 15 15s15-6.716 15-15c0-60.1-23.404-116.603-65.901-159.1-5.857-5.857-15.355-5.858-21.213 0s-5.858 15.355 0 21.213C430.717 113.944 451 162.913 451 215zM46 230c8.284 0 15-6.716 15-15 0-52.086 20.284-101.055 57.114-137.886 5.858-5.858 5.858-15.355 0-21.213-5.857-5.858-15.355-5.858-21.213 0C54.404 98.398 31 154.9 31 215c0 8.284 6.716 15 15 15z" fill="#000000" opacity="1" data-original="#000000" class=""></path></g></svg>
+             <!-- Notification Badge -->
+             @if(getUnreadNotificationCount() > 0) {
+             <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-medium">{{getUnreadNotificationCount()}}</span>
+             }
+            </button>
+
+            <!-- Notification Dropdown -->
+            @if(isNotificationDropdownOpen) {
+            <div class="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200 max-h-96 overflow-y-auto">
+              <!-- Header -->
+              <div class="px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-sm font-semibold text-gray-900">Notifications</h3>
+                @if(getUnreadNotificationCount() > 0) {
+                <button
+                  (click)="markAllNotificationsAsRead()"
+                  class="text-xs text-purple-600 hover:text-purple-800">
+                  Mark all as read
+                </button>
+                }
+              </div>
+
+              <!-- Notification List -->
+              @if(notifications.length > 0) {
+              <div class="py-1">
+                @for(notification of notifications; track notification.id) {
+                <div
+                  (click)="markNotificationAsRead(notification.id)"
+                  class="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+                  [class.bg-blue-50]="!notification.isRead">
+                  <div class="flex items-start space-x-3">
+                    <!-- Icon -->
+                    <div class="flex-shrink-0">
+                      <svg class="w-5 h-5" [class]="getNotificationColor(notification.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getNotificationIcon(notification.type)"/>
+                      </svg>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900" [class.font-semibold]="!notification.isRead">
+                        {{notification.title}}
+                      </p>
+                      <p class="text-sm text-gray-600 mt-1">
+                        {{notification.message}}
+                      </p>
+                      <p class="text-xs text-gray-400 mt-1">
+                        {{notification.time}}
+                      </p>
+                    </div>
+
+                    <!-- Unread indicator -->
+                    @if(!notification.isRead) {
+                    <div class="flex-shrink-0">
+                      <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    </div>
+                    }
+                  </div>
+                </div>
+                }
+              </div>
+              } @else {
+              <div class="px-4 py-8 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                <p class="mt-2 text-sm text-gray-500">No notifications</p>
+              </div>
+              }
+            </div>
+            }
+          </div>
+         }
+
+        <!-- User Menu -->
+        <div class="flex items-center space-x-2 pl-10">
+          <!-- User Profile -->
+           @if(isLoggedIn) {
+          <div class="relative user-dropdown">
+            <button
+              (click)="toggleUserDropdown()"
+              class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 transition-colors duration-200">
+              <img class="h-8 w-8 rounded-full bg-gray-700" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6zm9 11a1 1 0 01-2 0v-2a3 3 0 00-3-3H8a3 3 0 00-3 3v2a1 1 0 11-2 0v-2a5 5 0 015-5h8a5 5 0 015 5v2z'/%3E%3C/svg%3E" alt="User">
+              <span class="hidden lg:block text-sm font-medium">{{userName}}</span>
+            </button>
+            <!-- Dropdown menu -->
+            @if(isUserDropdownOpen) {
+            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                <button (click)="showSettings()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                Settings
+              </button>
+              <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                Logout
+              </button>
+            </div>
+            }
+          </div>
+          } @else {
+          <div class="relative inline-flex items-center space-x-2">
+              <button class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 transition-colors duration-200">
+                <span class="hidden lg:block text-sm font-bold" (click)="navigateToLogin()">Login</span>
+              </button>
+             <span class="hidden lg:block text-sm font-medium">or</span>
+             <button class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 transition-colors duration-200">
+               <span class="hidden lg:block text-sm font-bold" (click)="navigateToRegister()">Register</span>
+             </button>
+          </div>
+          }
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button class="text-gray-700 hover:text-purple-600 p-2" (click)="toggleMobileMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" [class.hidden]="!isMobileMenuOpen">
+      <div class="px-1 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
+        <a href="/" class="text-gray-700 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium">
+          Home
+        </a>
+        <a href="/discover" class="text-gray-700 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium">
+          Discover
+        </a>
+        <a href="/library" class="text-gray-700 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium">
+          Library
+        </a>
+        <a href="/playlists" class="text-gray-700 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium">
+          Playlists
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
