@@ -7,6 +7,15 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface SignUpRequest {
+  name: string;
+  email: string;
+  dayOfBirth: string;
+  phoneNumber: string;
+  username: string;
+  hashedPassword: string;
+}
+
 export interface UserInfo {
   id: number;
   name: string;
@@ -22,11 +31,16 @@ export interface LoginResponse {
   userInfo: UserInfo;
 }
 
+export interface SignUpResponse {
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private readonly API_URL = 'https://localhost:7124/api/Login/login';
+  private readonly SIGNUP_API_URL = 'https://localhost:7124/api/Register';
   private readonly TOKEN_KEY = 'auth_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_INFO_KEY = 'user_info';
@@ -40,6 +54,10 @@ export class AuthService {
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.API_URL, loginRequest);
+  }
+
+  signUp(signUpRequest: SignUpRequest): Observable<SignUpResponse> {
+    return this.http.post<SignUpResponse>(this.SIGNUP_API_URL, signUpRequest);
   }
 
   // Save authentication data to localStorage
