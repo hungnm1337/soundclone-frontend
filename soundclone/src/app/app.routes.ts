@@ -3,12 +3,19 @@ import { HomepageComponent } from './Views/common.component/homepage/homepage.co
 import { ErrorComponent } from './Views/common.component/error/error.component';
 import { SignInComponent } from './Views/common.component/sign-in/sign-in.component';
 import { SignUpComponent } from './Views/common.component/sign-up/sign-up.component';
+import { CreateTrackComponent } from './Views/Track/create-track/create-track.component';
+import { ContentComponent } from './Views/common.component/content/content.component';
 
 export const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'home', component: HomepageComponent},
+  {path: 'home', component: HomepageComponent
+    ,children: [
+      {path: 'createtrack', component: CreateTrackComponent},
+      { path: '', component: ContentComponent },
+    ]
+  },
   {path: 'login', component: SignInComponent},
   {path: 'register', component: SignUpComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: ErrorComponent},
 
 ];

@@ -1,16 +1,16 @@
 <header class="bg-white shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl max-h-screen mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center h-16">
       <!-- Left side - Logo -->
       <div class="flex-shrink-0">
         <a href="/" class="flex items-center space-x-2">
-          <span class="text-xl font-bold text-gray-900 font-sansita">SoundClone</span>
+          <span class="text-2xl font-bold text-gray-900 font-sansita">SoundClone</span>
         </a>
       </div>
 
       <!-- Center - Search Bar -->
       <div class="flex-1 flex justify-center ml-20">
-        <div class="w-96">
+        <div class="w-10/12">
           <div class="relative">
             <input
               type="text"
@@ -36,12 +36,7 @@
           <a href="/discover" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
             Discover
           </a>
-          <a href="/library" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-            Library
-          </a>
-          <a href="/playlists" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-            Playlists
-          </a>
+
         </nav>
 
          <!-- Notification icon-->
@@ -132,13 +127,16 @@
             <button
               (click)="toggleUserDropdown()"
               class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 transition-colors duration-200">
-              <img class="h-8 w-8 rounded-full bg-gray-700" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 12a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6zm9 11a1 1 0 01-2 0v-2a3 3 0 00-3-3H8a3 3 0 00-3 3v2a1 1 0 11-2 0v-2a5 5 0 015-5h8a5 5 0 015 5v2z'/%3E%3C/svg%3E" alt="User">
-              <span class="hidden lg:block text-sm font-medium">{{userName}}</span>
+              <img class="h-8 w-8 rounded-full bg-gray-700" src="{{userInfo?.avt}}" alt="User">
+              <span class="hidden lg:block text-sm font-medium">{{userInfo?.name}}</span>
             </button>
             <!-- Dropdown menu -->
             @if(isUserDropdownOpen) {
             <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                <button (click)="showSettings()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                <button (click)="showProfile()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                Profile
+              </button>
+              <button (click)="showSettings()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                 Settings
               </button>
               <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">

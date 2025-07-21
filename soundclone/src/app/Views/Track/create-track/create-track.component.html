@@ -1,0 +1,125 @@
+<div class="mx-56 flex flex-col bg-gray-100">
+  <div class="flex-1 bg-gray-50 flex items-start justify-center p-2 px-4">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-5xl min-w-96 w-full mx-auto p-6 bg-white rounded-2xl shadow-lg space-y-6">
+    <div class="text-center">
+      <h2 class="text-3xl font-sansita font-semibold text-gray-900">Create a new track</h2>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+
+      <!-- Left Column: Track Details -->
+      <div class="space-y-6">
+        <!-- Title -->
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <div class="mt-1">
+            <input type="text" id="title" formControlName="title" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" placeholder="e.g., My Awesome Song" />
+          </div>
+        </div>
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+          <div class="mt-1">
+            <textarea id="description" formControlName="description" rows="6" class="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" placeholder="A special track.."></textarea>
+          </div>
+        </div>
+        <!-- Is Public -->
+        <div class="flex items-center pt-4">
+          <input type="checkbox" formControlName="isPublic" id="isPublic" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+          <label for="isPublic" class="ml-3 block text-sm font-medium text-gray-900">Make this track public</label>
+        </div>
+      </div>
+
+      <!-- Right Column: File Uploads -->
+      <div class="space-y-6">
+        <!-- Audio File -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Audio file</label>
+
+          <!-- Uploader: Shown when no file is selected -->
+          <div *ngIf="!audioFile()" class="mt-1 flex flex-col justify-center items-center h-40 w-64 px-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div class="space-y-1 text-center">
+               <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V2.25l10.5 3M9 15.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+              </svg>
+              <div class="flex text-sm text-gray-600">
+                <label for="audio-file" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                  <span>Upload file</span>
+                  <input type="file" id="audio-file" (change)="onAudioFileSelected($event)" accept=".mp3,.m4a" class="sr-only" />
+                </label>
+                <p class="pl-1">or drag and drop</p>
+              </div>
+              <p class="text-xs text-gray-500">MP3, M4A</p>
+            </div>
+          </div>
+
+          <!-- File Info and Duration Wrapper -->
+          <div *ngIf="audioFile()" class="mt-1 flex flex-col justify-center min-h-40 max-h-40 max-w-64">
+            <div class="flex items-center justify-between p-3 border border-gray-200 bg-gray-50 rounded-md shadow-sm">
+                <div class="flex items-center min-w-0">
+                    <svg class="w-10 h-10 text-indigo-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V2.25l10.5 3M9 15.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+                    </svg>
+                    <p class="ml-3 font-medium text-gray-800 truncate">{{ audioFile()?.name }}</p>
+                </div>
+                <button (click)="removeAudioFile()" type="button" class="ml-2 text-red-500 hover:text-red-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </button>
+            </div>
+            <div *ngIf="durationInSeconds()" class="text-green-600 text-sm mt-1 font-medium">
+                Duration: {{ durationInSeconds() }} seconds
+            </div>
+          </div>
+
+          <div *ngIf="audioFileError()" class="text-red-500 text-sm mt-1">{{ audioFileError() }}</div>
+        </div>
+
+        <!-- Cover Art -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Cover Art</label>
+          <div *ngIf="!coverArtPreview()" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md min-h-52 min-w-64">
+            <div class="space-y-1 text-center">
+              <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div class="flex text-sm text-gray-600">
+                <label for="cover-art" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                  <span>Upload file</span>
+                  <input type="file" id="cover-art" (change)="onCoverArtSelected($event)" accept=".png,.jpg,.jpeg" class="sr-only" />
+                </label>
+                 <p class="pl-1">or drag and drop</p>
+              </div>
+               <p class="text-xs text-gray-500">PNG, JPG, JPEG</p>
+            </div>
+          </div>
+          <div *ngIf="coverArtError()" class="text-red-500 text-sm mt-1">{{ coverArtError() }}</div>
+          <div *ngIf="coverArtPreview()" class="mt-2 relative">
+            <img [src]="coverArtPreview()" alt="Cover preview" class="max-h-52 max-w-64 object-cover border rounded-md shadow-md" />
+             <button (click)="coverArt.set(null); coverArtPreview.set(null)" type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 leading-none hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit" [disabled]="!canSubmit() || submitting()" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-300">
+        <span *ngIf="submitting()" class="flex items-center">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Sending...
+        </span>
+        <span *ngIf="!submitting()">Create track</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+</div>

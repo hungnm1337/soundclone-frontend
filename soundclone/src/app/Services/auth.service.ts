@@ -22,6 +22,7 @@ export interface UserInfo {
   email: string;
   username: string;
   roleId: number;
+  avt : string;
 }
 
 export interface LoginResponse {
@@ -141,6 +142,11 @@ export class AuthService {
   getCurrentUserRoleId(): number | null {
     const userInfo = this.getUserInfo();
     return userInfo ? userInfo.roleId : null;
+  }
+
+  getCurrentUserUserId(): number | null {
+    const userInfo = this.getUserInfo();
+    return userInfo ? userInfo.id : null;
   }
 
   // Check if token is expired

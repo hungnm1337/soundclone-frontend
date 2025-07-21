@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
-import { FooterComponent } from "../footer/footer.component";
 import { MenuComponent } from "../menu/menu.component";
-import { ContentComponent } from "../content/content.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [HeaderComponent, MenuComponent, ContentComponent],
+  imports: [HeaderComponent, MenuComponent, RouterOutlet],
   templateUrl: './homepage.component.html'
 })
 export class HomepageComponent {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../Services/auth.service';
+import { AuthService, UserInfo } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 
 interface Notification {
@@ -20,7 +20,10 @@ interface Notification {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  userName: string = '';
+showProfile() {
+throw new Error('Method not implemented.');
+}
+  userInfo: UserInfo | null = null;
   isLoggedIn: boolean = false;
   isMobileMenuOpen: boolean = false;
   isUserDropdownOpen: boolean = false;
@@ -95,10 +98,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   checkLoginStatus() {
     this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
-      this.userName = this.authService.getCurrentUserName() || '';
-      console.log('User is logged in:', this.userName);
+      this.userInfo = this.authService.getUserInfo();
+      console.log('User is logged in:', this.userInfo?.username);
     } else {
-      this.userName = '';
+      this.userInfo = null;
       console.log('User is not logged in');
     }
   }
@@ -191,7 +194,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
-    this.userName = '';
+    this.userInfo = null;
     this.isUserDropdownOpen = false;
     this.isNotificationDropdownOpen = false;
     this.router.navigate(['/login']);

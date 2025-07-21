@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: './menu.component.html'
 })
 export class MenuComponent {
+  constructor(private router: Router) {}
+
+ createTrack() {
+  this.router.navigate(['/home/createtrack']);
+}
+
   tracks = [
     { name: 'Blinding Lights', artist: 'The Weeknd' },
     { name: 'Dance Monkey', artist: 'Tones and I' },
