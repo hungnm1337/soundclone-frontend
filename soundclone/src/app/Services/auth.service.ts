@@ -68,10 +68,6 @@ export class AuthService {
     localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(response.userInfo));
     localStorage.setItem(this.EXPIRES_AT_KEY, response.expiresAt);
 
-    console.log('Authentication data saved to localStorage');
-    console.log('Token:', response.token);
-    console.log('User Info:', response.userInfo);
-
     // Update login state
     this.loginStateSubject.next(true);
   }

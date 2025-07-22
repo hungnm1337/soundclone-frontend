@@ -10,42 +10,42 @@
         <div class="pt-1">
           <h4 class="text-xl font-bold text-gray-900 mb-2">Quick Actions</h4>
           <div class="space-y-2">
-            <button (click)="createTrack()"  class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button (click)="createTrack()"  class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent focus:outline-none w-full text-left">
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
               </svg>
 
               <span>Create Track</span>
             </button>
-            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button (click)="createPlaylist()" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent  focus:outline-none w-full text-left">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
               </svg>
               <span>Create Playlist</span>
             </button>
 
-            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent  focus:outline-none w-full text-left">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
               </svg>
               <span>Liked Songs</span>
             </button>
 
-            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent  focus:outline-none w-full text-left">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span>Recently Played</span>
             </button>
 
-            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent  focus:outline-none w-full text-left">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span>Downloaded</span>
             </button>
 
-            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent hover:border-gray-600 focus:outline-none w-full text-left">
+            <button class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-colors duration-200 border-0 border-b-2 border-transparent  focus:outline-none w-full text-left">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
               </svg>
@@ -58,17 +58,24 @@
         <div>
           <h3 class="text-xl font-bold text-gray-900 mb-2">Your Playlists</h3>
           <div class="space-y-3">
-            @for (playlist of playlists.slice(0, showAllPlaylists ? playlists.length : 3); track playlist.name) {
-              <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
+            @for (playlist of playlists.slice(0, showAllPlaylists ? playlists.length : 3); track playlist.playlistId) {
+              <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
                 <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-400 rounded-md flex items-center justify-center">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                  </svg>
+                  <img class="w-10 h-10 rounded-md" src="{{ playlist.picturePlaylistUrl }}" alt="">
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate">{{ playlist.name }}</p>
-                  <p class="text-xs text-gray-500 truncate">{{ playlist.songs }} songs</p>
+                  <p class="text-sm font-medium text-gray-900 truncate">{{ playlist.title }}</p>
+                  <p class="text-xs text-gray-500 truncate">{{ playlist.trackQuantity }} songs</p>
                 </div>
+                @if(!playlist.isPublish){
+                  <button class=" focus:outline-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                </button>
+                }
+
+
               </div>
             }
           </div>
@@ -93,3 +100,47 @@
 
   </div>
 </div>
+
+<!-- Popup tạo playlist -->
+@if (showCreatePlaylistPopup) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+      <button (click)="closeCreatePlaylistPopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700">&times;</button>
+      <h2 class="text-lg font-bold mb-4">Tạo Playlist mới</h2>
+      <form [formGroup]="createPlaylistForm" (ngSubmit)="submitCreatePlaylist()" autocomplete="off">
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Tên Playlist</label>
+          <input type="text" class="w-full border rounded px-3 py-2" formControlName="title" required />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Ảnh Playlist</label>
+          <div class="flex flex-col gap-2">
+            @if (!playlistImageFile) {
+              <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-blue-400 rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100 transition">
+                <span class="text-blue-600 font-semibold">Chọn ảnh .jpg hoặc .png</span>
+                <input type="file" class="hidden" (change)="onPlaylistFileChange($event)" accept="image/jpeg,image/png" required />
+              </label>
+            }
+            @if (playlistImageFile) {
+              <div class="flex flex-col items-center mt-2">
+                <span class="text-xs text-gray-500 mb-1">Preview:</span>
+                <img [src]="playlistImagePreview" alt="Preview" class="w-32 h-32 object-cover rounded shadow border border-gray-200" />
+                <button type="button" (click)="removePlaylistImage()" class="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">Chọn lại ảnh</button>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="mb-4 flex items-center">
+          <input type="checkbox" id="isPublish" formControlName="isPublish" class="mr-2" />
+          <label for="isPublish" class="text-sm">Công khai playlist</label>
+        </div>
+        @if (createPlaylistError) {
+          <div class="text-red-500 mb-2">{{ createPlaylistError }}</div>
+        }
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full" [disabled]="isCreatingPlaylist">
+          {{ isCreatingPlaylist ? 'Đang tạo...' : 'Tạo Playlist' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}

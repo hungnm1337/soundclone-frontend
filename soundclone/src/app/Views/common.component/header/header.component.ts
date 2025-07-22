@@ -99,10 +99,8 @@ throw new Error('Method not implemented.');
     this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
       this.userInfo = this.authService.getUserInfo();
-      console.log('User is logged in:', this.userInfo?.username);
     } else {
       this.userInfo = null;
-      console.log('User is not logged in');
     }
   }
 
@@ -179,7 +177,6 @@ throw new Error('Method not implemented.');
   }
 
   showSettings() {
-    console.log('Settings clicked');
     // Navigate to settings page or open settings modal
   }
 

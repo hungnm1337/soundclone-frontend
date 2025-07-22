@@ -29,43 +29,27 @@ export class SignInComponent {
     this.usernameError = '';
     this.passwordError = '';
 
-    console.log('Validating form...');
-    console.log('Username value:', this.username);
-    console.log('Password value:', this.password);
 
     // Validate username
     if (!this.username || this.username.trim() === '') {
       this.usernameError = 'Username is required';
       isValid = false;
-      console.log('Username validation failed');
     }
 
     // Validate password
     if (!this.password || this.password.trim() === '') {
       this.passwordError = 'Password is required';
       isValid = false;
-      console.log('Password validation failed - empty');
     } else if (this.password.length < 8) {
       this.passwordError = 'Password must be at least 8 characters long';
       isValid = false;
-      console.log('Password validation failed - too short');
     }
-
-    console.log('Form validation result:', isValid);
-    console.log('Username error:', this.usernameError);
-    console.log('Password error:', this.passwordError);
-
-    return isValid;
+   return isValid;
   }
 
   onLogin() {
-    console.log('Login attempt:');
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-    console.log('Remember me:', this.rememberMe);
 
     if (this.validateForm()) {
-      console.log('Form is valid, proceeding with authentication...');
 
       this.isLoading = true;
 
@@ -76,26 +60,19 @@ export class SignInComponent {
 
       this.authService.login(loginRequest).subscribe({
         next: (response: LoginResponse) => {
-          console.log('Login successful:', response);
 
           // Save authentication data to localStorage
           this.authService.saveAuthData(response);
 
           // Check if user is logged in
           if (this.authService.isLoggedIn()) {
-            console.log('User is now logged in');
-            console.log('Current user name:', this.authService.getCurrentUserName());
-            console.log('Current username:', this.authService.getCurrentUsername());
-            console.log('Current role ID:', this.authService.getCurrentUserRoleId());
 
-            // Navigate to home page
             this.router.navigate(['/home']);
           }
 
           this.isLoading = false;
         },
         error: (error: any) => {
-          console.error('Login failed:', error);
           this.isLoading = false;
 
           // Handle different error scenarios
@@ -110,9 +87,7 @@ export class SignInComponent {
       });
 
     } else {
-      console.log('Form validation failed');
-      console.log('Username error:', this.usernameError);
-      console.log('Password error:', this.passwordError);
+
     }
   }
 

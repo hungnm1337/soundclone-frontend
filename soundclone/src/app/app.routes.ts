@@ -5,6 +5,7 @@ import { SignInComponent } from './Views/common.component/sign-in/sign-in.compon
 import { SignUpComponent } from './Views/common.component/sign-up/sign-up.component';
 import { CreateTrackComponent } from './Views/Track/create-track/create-track.component';
 import { ContentComponent } from './Views/common.component/content/content.component';
+import { ServicesComponent } from './Views/common.component/services/services.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
@@ -15,6 +16,7 @@ export const routes: Routes = [
   },
   {path: 'login', component: SignInComponent},
   {path: 'register', component: SignUpComponent},
+  {path: 'services', component: ServicesComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: ErrorComponent},
 

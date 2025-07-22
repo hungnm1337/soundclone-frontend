@@ -28,7 +28,6 @@ export class ContentComponent implements OnInit {
     this.trackService.GetAlbum().subscribe({
       next: (data) => {
         this.albums = data;
-        console.log('Albums fetched successfully:', this.albums); 
       },
       error: (error) => {
         console.error('Error fetching albums:', error);
