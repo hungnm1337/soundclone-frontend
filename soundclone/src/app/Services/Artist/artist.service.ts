@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface ArtistDetailDTO{
+  userId: number;
+  name: string;
+  profilePictureUrl: string;
+  followingQuantity: number
+  followerQuantity: number;
+}
+
 export interface Artist {
   userId: number;
   name: string;
@@ -18,5 +26,9 @@ export class ArtistService {
 
   GetTop5Artists(): Observable<Artist[]> {
     return this.http.get<Artist[]>(`${this.apiUrl}/get-artist`);
+  }
+
+  GetArtistDetail(artistId: number): Observable<ArtistDetailDTO> {
+    return this.http.get<ArtistDetailDTO>(`${this.apiUrl}/get/${artistId}`);
   }
 }

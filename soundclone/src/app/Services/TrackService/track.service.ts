@@ -5,7 +5,7 @@ import { UploadService, UploadResponse } from '../UploadFile/upload.service';
 import { AuthService } from '../auth.service';
 import { forkJoin, switchMap } from 'rxjs';
 
-export interface CreateTrack {
+interface CreateTrack {
   Title: string;
   Description: string;
   AudioFileUrl: string;
@@ -33,6 +33,21 @@ export interface Album {
   view: number;
   imageUrl: string;
 }
+
+export interface TrackDetail {
+  trackId: number;
+  title: string;
+  description: string;
+  audioFileUrl: string;
+  coverArtUrl: string;
+  waveformUrl: string;
+  durationInSeconds: number;
+  isPublic: boolean;
+  uploadDate: Date;
+  updateBy: number;
+  playCount: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -84,4 +99,25 @@ constructor(private http: HttpClient, private uploadService: UploadService, priv
 
   return this.http.get<Album[]>(this.apiUrl + '/albums', { headers });
 }
+
+public GetAlbumByArtist(artistId: number): Observable<Album[]> {
+  const token = this.authService.getToken();
+  let headers = new HttpHeaders();
+  if (token) {
+    headers = headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  return this.http.get<Album[]>(`${this.apiUrl}/albums/${artistId}`, { headers });
+}
+
+  public GetTrackDetail(id: number): Observable<TrackDetail> {
+    const token = this.authService.getToken();
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return this.http.get<TrackDetail>(`${this.apiUrl}/getbyid/${id}`, { headers });
+  }
+
 }

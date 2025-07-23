@@ -200,4 +200,8 @@ throw new Error('Method not implemented.');
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
+
+  goHome() {
+    this.router.navigate(['/home']);
+  }
 }

@@ -3,7 +3,7 @@
         <div class="flex items-center h-16">
       <!-- Left side - Logo -->
       <div class="flex-shrink-0">
-        <a href="/" class="flex items-center space-x-2">
+        <a (click)="goHome()" routerLink="/home" tabindex="0" class="flex items-center space-x-2">
           <span class="text-2xl font-bold text-gray-900 font-sansita">SoundClone</span>
         </a>
       </div>
@@ -30,7 +30,7 @@
       <div class="flex items-center space-x-2">
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex space-x-2">
-          <a href="/" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+          <a (click)="goHome()" routerLink="/home" tabindex="0" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">
             Home
           </a>
           <a href="/services" class="text-gray-700 hover:text-purple-600 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200">

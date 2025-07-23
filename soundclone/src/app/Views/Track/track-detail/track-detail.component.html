@@ -1,1 +1,163 @@
-<p>track-detail works!</p>
+<div class="flex flex-col min-h-screen overflow-y-auto scrollbar-hide">
+  <div class="flex flex-row w-full justify-center gap-6">
+    <!-- Track -->
+    <div class="w-9/12 bg-white rounded-xl shadow-xl p-6 flex flex-col mt-6">
+      <div class="relative w-full h-44 bg-white rounded-lg shadow-lg overflow-hidde mb-10">
+        <div class="absolute inset-0 rounded-lg overflow-hidden h-48">
+          <img [src]="trackDetail?.coverArtUrl" class="w-full h-full object-cover" alt="">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-100"></div>
+        </div>
+        <div class="absolute flex space-x-6 transform translate-x-6 translate-y-8">
+          <div class="w-36 h-36 rounded-lg shadow-lg overflow-hidden">
+            <img [src]="trackDetail?.coverArtUrl" alt="">
+          </div>
+          <div class="text-white pt-12">
+            <h3 class="font-bold">{{ trackDetail?.title }}</h3>
+            <div class="text-sm opacity-60">{{artistDetail?.name}}</div>
+            <div class="mt-8 text-gray-400">
+              <div class="flex items-center space-x-2 text-xs">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                <span>Easy listening</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- button -->
+      <div class="flex flex-row justify-center items-center gap-4 my-4">
+        <button (click)="onPrevTrack()" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <button (click)="seek({target: {value: playerCurrentTime - 5}})" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">-5s</button>
+        <button (click)="playPause()" class="text-gray-700 rounded-full p-2 hover:bg-gray-200 transition">
+          <ng-container *ngIf="playerIsPlaying; else playIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+            </svg>
+          </ng-container>
+          <ng-template #playIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            </svg>
+          </ng-template>
+        </button>
+        <button (click)="seek({target: {value: playerCurrentTime + 5}})" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">+5s</button>
+        <button (click)="onNextTrack()" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+        <div class="flex items-center w-full mx-4">
+          <span class="text-xs text-gray-400 w-10 text-right">{{ formatTime(playerCurrentTime) }}</span>
+          <input type="range" min="0" [max]="playerDuration" [value]="playerCurrentTime" (input)="seek($event)" class="mx-2 w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer" [style.--progress]="(playerDuration ? (playerCurrentTime / playerDuration) * 100 : 0) + '%'">
+          <span class="text-xs text-gray-400 w-10 text-left">{{ formatTime(playerDuration) }}</span>
+        </div>
+      </div>
+      <!-- XÓA: @if (trackDetail?.audioFileUrl) { ...audio... } -->
+      <div class="flex flex-row justify-between w-full text-gray-400 text-sm mb-2">
+        <span>{{ trackDetail?.playCount }} Views</span>
+       <div class="flex flex-row justify-between">
+          <!-- Like button -->
+          <div class="relative group">
+            <button
+              (click)="onLikeTrack()"
+              class="p-2 mr-2 rounded-full hover:bg-pink-200 hover:text-pink-500 shadow transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+              </svg>
+
+            </button>
+            <!-- Tooltip hiển thị trên nút -->
+            <span
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-10">
+              Like track
+            </span>
+          </div>
+
+          <!-- Add to playlist button -->
+          <div class="relative group">
+            <button
+              (click)="onAddToPlaylist()"
+              class="p-2 rounded-full hover:bg-blue-200 hover:text-blue-500 shadow transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+            <!-- Tooltip hiển thị trên nút -->
+            <span
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-10">
+              Add to playlist
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex flex-row justify-between w-full text-gray-400 text-xs">
+        <span>{{ trackDetail?.uploadDate | date:'mediumDate' }}</span>
+        @if (trackDetail?.isPublic) {
+          <span class="text-gray-400 font-semibold">Public</span>
+        } @else {
+          <span class="text-gray-400 font-semibold">Private</span>
+        }
+      </div>
+    </div>
+    <!-- Artist -->
+    <div class="w-3/12 bg-white rounded-xl shadow-xl p-6 mt-6 justify-center-center">
+      <div class="flex flex-col items-center mt-4">
+        <img [src]="artistDetail?.profilePictureUrl" alt="Artist Profile Picture" class="w-32 h-32 rounded-full mb-4">
+        <h2 class="text-xl font-bold mb-8">{{artistDetail?.name}}</h2>
+        <div class="flex flex-row justify-center items-center gap-4 w-full">
+
+          <p class="text-gray-600">Followers: {{artistDetail?.followerQuantity}}</p>
+          <p class="text-gray-600">Following: {{artistDetail?.followingQuantity}}</p>
+
+
+        </div>
+        <div class="flex flex-row justify-center items-center gap-4 mt-6 w-full">
+          <button class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
+            View Profile
+          </button>
+        </div>
+        <div class="flex flex-row justify-center items-center gap-4 mt-6 w-full">
+
+          <button class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
+            Follow
+          </button>
+        </div>
+    </div>
+  </div>
+
+
+</div>
+<h1 class="text-xl mt-6 font-bold text-gray-900 mb-2">Other tracks from {{artistDetail?.name}}</h1>
+
+ <div  class="grid mt-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
+      @for (album of albums; track album.id) {
+        <div (click)="OpenTrack(album.id)" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                  <div class="aspect-square overflow-hidden">
+          <img
+            [src]="album.imageUrl"
+            [alt]="album.title"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          >
+        </div>
+        <div class="p-3">
+          <h3 class="font-semibold text-gray-900 text-sm mb-1 truncate">{{ album.title }}</h3>
+          <p class="text-gray-600 text-xs mb-2 truncate">{{ album.artist }}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-500">{{ album.year }}</span>
+            <span class="text-xs text-gray-500">{{ album.view }} views</span>
+          </div>
+        </div>
+        </div>
+      }
+    </div>
+
+<style>
+.hide-audio-play-pause::-webkit-media-controls-play-button,
+.hide-audio-play-pause::-webkit-media-controls-pause-button {
+  display: none !important;
+}
+.hide-audio-play-pause::-webkit-media-controls-panel {
+  justify-content: flex-end;
+}
+</style>

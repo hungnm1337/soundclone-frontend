@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackService, Album } from '../../../Services/TrackService/track.service';
 import { Artist, ArtistService } from '../../../Services/Artist/artist.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Artist, ArtistService } from '../../../Services/Artist/artist.service';
 })
 export class ContentComponent implements OnInit {
 
-  constructor(private trackService: TrackService, private artistService: ArtistService) { }
+  constructor(private trackService: TrackService, private artistService: ArtistService, private router: Router) { }
   albums: Album[] = [];
   artists: Artist[] = [];
   ngOnInit() {
@@ -33,5 +34,12 @@ export class ContentComponent implements OnInit {
         console.error('Error fetching artists:', error);
       }
     });
+  }
+
+  OpenTrack(trackId: number) {
+    // Logic to open the track details, e.g., navigate to a track details page
+    console.log('Opening track with ID:', trackId);
+
+    this.router.navigate(['home/track-details', trackId]);
   }
 }

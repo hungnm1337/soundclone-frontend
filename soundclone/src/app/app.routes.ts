@@ -6,11 +6,13 @@ import { SignUpComponent } from './Views/common.component/sign-up/sign-up.compon
 import { CreateTrackComponent } from './Views/Track/create-track/create-track.component';
 import { ContentComponent } from './Views/common.component/content/content.component';
 import { ServicesComponent } from './Views/common.component/services/services.component';
+import { TrackDetailComponent } from './Views/Track/track-detail/track-detail.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
       {path: 'createtrack', component: CreateTrackComponent},
+      {path: 'track-details/:id', component: TrackDetailComponent},
       { path: '', component: ContentComponent },
     ]
   },
