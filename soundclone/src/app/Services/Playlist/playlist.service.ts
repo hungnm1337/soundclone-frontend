@@ -36,6 +36,12 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
 
   GetPlaylistMenu(): Observable<PlaylistMenu[]> {
     const userId = this.authService.getCurrentUserUserId();
+    if (!userId) {
+      return new Observable<PlaylistMenu[]>(observer => {
+        observer.error('User ID is not available');
+        observer.complete();
+      });
+    } 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.authService.getToken()}`

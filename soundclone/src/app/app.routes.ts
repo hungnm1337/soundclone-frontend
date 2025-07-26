@@ -7,12 +7,14 @@ import { CreateTrackComponent } from './Views/Track/create-track/create-track.co
 import { ContentComponent } from './Views/common.component/content/content.component';
 import { ServicesComponent } from './Views/common.component/services/services.component';
 import { TrackDetailComponent } from './Views/Track/track-detail/track-detail.component';
+import { ProfileComponent } from './Views/User.conponent/profile/profile.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
       {path: 'createtrack', component: CreateTrackComponent},
       {path: 'track-details/:id', component: TrackDetailComponent},
+      {path: 'profile', component: ProfileComponent},
       { path: '', component: ContentComponent },
     ]
   },

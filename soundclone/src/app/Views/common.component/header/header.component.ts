@@ -21,7 +21,7 @@ interface Notification {
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 showProfile() {
-throw new Error('Method not implemented.');
+  this.router.navigate(['home/profile']);
 }
   userInfo: UserInfo | null = null;
   isLoggedIn: boolean = false;
