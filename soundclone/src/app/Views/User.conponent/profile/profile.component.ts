@@ -1,16 +1,19 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ProfileServiceService, UserProfile } from '../../../Services/profile/profile-service.service';
+import { FormsModule } from '@angular/forms';
+import { ProfileServiceService, UserProfile, UserInformation } from '../../../Services/profile/profile-service.service';
 import { UploadService } from '../../../Services/UploadFile/upload.service';
+import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule], // Thêm FormsModule vào đây
   templateUrl: './profile.component.html',
   providers: [DatePipe]
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit, OnDestroy {
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   userProfile: UserProfile | null = null;
@@ -19,6 +22,11 @@ export class ProfileComponent {
   selectedFile: File | null = null;
   uploadError: string | null = null;
   isUploading = false;
+  userInfoEdit: UserInformation | null = null;
+  showUserInfoEditPopup = false;
+  isSavingUserInfo = false;
+  userInfoEditError: string | null = null;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private profileService: ProfileServiceService,
@@ -26,7 +34,15 @@ export class ProfileComponent {
   ) {}
 
   ngOnInit() {
-    this.profileService.GetProfile().subscribe(
+    this.loadUserProfile();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private loadUserProfile() {
+    const subscription = this.profileService.GetProfile().subscribe(
       (profile) => {
         this.userProfile = profile;
         console.log('User Profile:', this.userProfile);
@@ -35,9 +51,9 @@ export class ProfileComponent {
         console.error('Error fetching user profile:', error);
       }
     );
+    this.subscriptions.push(subscription);
   }
 
-  // Popup Management
   openImageUpload() {
     this.showImageUpload = true;
     this.selectedImage = null;
@@ -55,7 +71,6 @@ export class ProfileComponent {
     }
   }
 
-  // File Selection
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -63,7 +78,6 @@ export class ProfileComponent {
     }
   }
 
-  // Drag and Drop
   onDragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
@@ -85,16 +99,13 @@ export class ProfileComponent {
     }
   }
 
-  // File Validation and Preview
   private handleFileSelection(file: File) {
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       this.uploadError = 'Please select a valid image file.';
       return;
     }
 
-    // Validate file size (5MB limit)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       this.uploadError = 'File size must be less than 5MB.';
       return;
@@ -103,7 +114,6 @@ export class ProfileComponent {
     this.uploadError = null;
     this.selectedFile = file;
 
-    // Create preview
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.selectedImage = e.target.result;
@@ -111,7 +121,6 @@ export class ProfileComponent {
     reader.readAsDataURL(file);
   }
 
-    // Upload Image
   async uploadImage() {
     if (!this.selectedFile || !this.userProfile) {
       return;
@@ -121,15 +130,10 @@ export class ProfileComponent {
     this.uploadError = null;
 
     try {
-      const response = await this.uploadService.uploadFile(this.selectedFile).toPromise();
+      const response = await firstValueFrom(this.uploadService.uploadFile(this.selectedFile));
 
       if (response && response.url) {
-        // Update profile with new image URL
         this.userProfile.profilePictureUrl = response.url;
-
-        // Here you would typically call your profile update service
-        // await this.profileService.updateProfile(this.userProfile).toPromise();
-
         console.log('Image uploaded successfully:', response.url);
         this.closeImageUpload();
       } else {
@@ -177,5 +181,69 @@ export class ProfileComponent {
 
     const filledFields = fields.filter(field => field && field.trim() !== '').length;
     return Math.round((filledFields / fields.length) * 100);
+  }
+
+  ChangeUserInfor() {
+    if (!this.userProfile) return;
+    // Pre-fill the form with current userProfile data
+    this.userInfoEdit = {
+      userId: this.userProfile.userId,
+      name: this.userProfile.name,
+      email: this.userProfile.email,
+      dayOfBirth: this.userProfile.dayOfBirth,
+      phoneNumber: this.userProfile.phoneNumber,
+      bio: this.userProfile.bio || ''
+    };
+    this.showUserInfoEditPopup = true;
+    this.userInfoEditError = null;
+  }
+
+  closeUserInfoEditPopup() {
+    this.showUserInfoEditPopup = false;
+    this.userInfoEdit = null;
+    this.userInfoEditError = null;
+  }
+
+  onUserInfoEditChange(field: keyof UserInformation, event: Event) {
+    if (this.userInfoEdit) {
+      const input = event.target as HTMLInputElement | HTMLTextAreaElement;
+      (this.userInfoEdit as any)[field] = input.value;
+    }
+  }
+
+  async saveUserInfoEdit() {
+    if (!this.userInfoEdit) return;
+    this.isSavingUserInfo = true;
+    this.userInfoEditError = null;
+
+    try {
+      console.log('Sending to API:', this.userInfoEdit); // Log dữ liệu gửi lên
+      const success = await firstValueFrom(this.profileService.updateUserInformation(this.userInfoEdit));
+      console.log('API updateUserInformation response:', success); // Log response trả về
+
+      if (success) {
+        // Refresh profile data only if update was successful
+        const subscription = this.profileService.GetProfile().subscribe(
+          (profile) => {
+            this.userProfile = profile;
+            this.closeUserInfoEditPopup();
+          },
+          (error) => {
+            console.error('Error reloading profile:', error);
+            this.userInfoEditError = 'Failed to reload user profile.';
+            this.closeUserInfoEditPopup();
+          }
+        );
+        this.subscriptions.push(subscription);
+      } else {
+        this.userInfoEditError = 'Failed to update user information.';
+        console.error('API updateUserInformation returned false'); // Log khi API trả về false
+      }
+    } catch (error: any) {
+      console.error('Error updating user info:', error);
+      this.userInfoEditError = 'Failed to update user information.';
+    } finally {
+      this.isSavingUserInfo = false;
+    }
   }
 }

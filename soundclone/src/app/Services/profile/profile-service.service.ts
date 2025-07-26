@@ -23,7 +23,16 @@ export interface UserProfile {
   userId: number;
   profilePictureUrl: string;
 
- }
+}
+export interface UserInformation {
+  userId: number;
+  name: string;
+  email: string;
+  dayOfBirth: string;
+  phoneNumber: string;
+  bio?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,4 +59,10 @@ export class ProfileServiceService {
       })
     );
   }
+
+  public updateUserInformation(userInfo: UserInformation): Observable<boolean> {
+    return this.http.put<boolean>(`${this.apiUrl}/update-profile`, userInfo);
+  }
+
+
 }

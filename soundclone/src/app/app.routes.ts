@@ -15,12 +15,12 @@ export const routes: Routes = [
       {path: 'createtrack', component: CreateTrackComponent},
       {path: 'track-details/:id', component: TrackDetailComponent},
       {path: 'profile', component: ProfileComponent},
+      {path: 'services', component: ServicesComponent},
       { path: '', component: ContentComponent },
     ]
   },
   {path: 'login', component: SignInComponent},
   {path: 'register', component: SignUpComponent},
-  {path: 'services', component: ServicesComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: ErrorComponent},
 

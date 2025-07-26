@@ -20,6 +20,10 @@ interface Notification {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+
+GoServices() {
+  this.router.navigate(['home/services']);
+}
 showProfile() {
   this.router.navigate(['home/profile']);
 }
