@@ -40,6 +40,9 @@ export interface SignUpResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  getUserId() {
+    throw new Error('Method not implemented.');
+  }
   private readonly API_URL = 'https://localhost:7124/api/Login/login';
   private readonly SIGNUP_API_URL = 'https://localhost:7124/api/Register';
   private readonly TOKEN_KEY = 'auth_token';

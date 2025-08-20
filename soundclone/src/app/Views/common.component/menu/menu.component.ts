@@ -33,6 +33,12 @@ export class MenuComponent implements OnInit {
     this.playlistService.GetPlaylistMenu().subscribe(data => {
       this.playlists = data;
     });
+
+    this.playlistService.playlistUpdated$.subscribe(() => {
+      this.playlistService.GetPlaylistMenu().subscribe(data => {
+        this.playlists = data;
+      });
+    });
   }
   createTrack() {
     this.router.navigate(['/home/createtrack']);

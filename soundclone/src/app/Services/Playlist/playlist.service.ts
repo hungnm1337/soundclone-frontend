@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UploadService } from '../UploadFile/upload.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 export interface PlaylistMenu {
   playlistId: number;
   title: string;
   picturePlaylistUrl: string;
   trackQuantity: number;
   isPublish: boolean;
+}
+
+export interface AddTrackToPlaylist {
+  playlistId: number;
+  trackId: number;
 }
 
 export interface PlaylistCreateInput {
@@ -32,7 +37,22 @@ export class PlaylistService {
 
 private apiUrl = 'https://localhost:7124/api/Playlist';
 
+  private playlistUpdatedSubject = new Subject<void>();
+  public playlistUpdated$ = this.playlistUpdatedSubject.asObservable();
+
   constructor(private http: HttpClient, private authService: AuthService, private uploadService: UploadService) { }
+
+  AddTrackToPlaylist(data: AddTrackToPlaylist): Observable<any> {
+    const userId = this.authService.getCurrentUserUserId();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.post(`${this.apiUrl}/add-track`, data, { headers }).pipe(
+      tap(() => this.playlistUpdatedSubject.next())
+    );
+  }
 
   GetPlaylistMenu(): Observable<PlaylistMenu[]> {
     const userId = this.authService.getCurrentUserUserId();
@@ -41,7 +61,7 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
         observer.error('User ID is not available');
         observer.complete();
       });
-    } 
+    }
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.authService.getToken()}`

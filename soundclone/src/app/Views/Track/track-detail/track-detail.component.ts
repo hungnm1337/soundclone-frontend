@@ -5,7 +5,8 @@ import { ArtistService, ArtistDetailDTO } from '../../../Services/Artist/artist.
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { PlayerService, PlayerTrack } from '../../../Services/Player/player.service';
-
+import { LikeTrackInput, LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
+import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Services/Playlist/playlist.service';
 @Component({
   selector: 'app-track-detail',
   standalone: true,
@@ -14,13 +15,27 @@ import { PlayerService, PlayerTrack } from '../../../Services/Player/player.serv
   styleUrl: './track-detail.component.scss'
 })
 export class TrackDetailComponent implements OnInit {
-onAddToPlaylist() {
-throw new Error('Method not implemented.');
-}
-onLikeTrack() {
-throw new Error('Method not implemented.');
-}
+  onAddToPlaylist() {
+    this.isPlaylistModalOpen = true;
+    console.log('Add to playlist clicked');
+  }
 
+  onLikeTrack() {
+    if (this.trackId) {
+      this.likeTrackService.ToggleUserLikeTrackStatus(this.trackId).subscribe({
+        next: (isLiked: boolean) => {
+          this.isLiked = isLiked;
+          console.log('Like track response:', isLiked);
+        },
+        error: (error: any) => {
+          console.error('Error liking track:', error);
+        }
+      });
+    }
+  }
+  public playlists: PlaylistMenu[] = [];
+  public isPlaylistModalOpen: boolean = false;
+  public isLiked: boolean = false;
   public albums: Album[] = [];
   public trackId: number | null = null;
   public trackDetail: TrackDetail | null = null;
@@ -32,11 +47,40 @@ throw new Error('Method not implemented.');
   public playerIsPlaying: boolean = false;
   private playerSub?: any;
 
-  constructor(private route: ActivatedRoute, private trackService: TrackService, private artistService: ArtistService, private router: Router, private playerService: PlayerService) {
+  constructor(private route: ActivatedRoute,
+     private trackService: TrackService,
+     private artistService: ArtistService,
+     private router: Router,
+     private playerService: PlayerService,
+     private likeTrackService: LikeTrackService,
+     private playlistService: PlaylistService
+   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.trackId = id ? +id : null;
       this.loadTrackData();
+    });
+  }
+
+  closePlaylistModal(): void {
+    this.isPlaylistModalOpen = false;
+  }
+
+  addTrackToSelectedPlaylist(playlistId: number): void {
+    if (!this.trackId) {
+      console.error('No trackId available to add to playlist');
+      return;
+    }
+    const payload: AddTrackToPlaylist = { playlistId, trackId: this.trackId };
+    console.log('Adding track to playlist', payload);
+    this.playlistService.AddTrackToPlaylist(payload).subscribe({
+      next: (response) => {
+        console.log('AddTrackToPlaylist success:', response);
+        this.isPlaylistModalOpen = false;
+      },
+      error: (error) => {
+        console.error('AddTrackToPlaylist error:', error);
+      }
     });
   }
   ngOnInit(): void {
@@ -46,10 +90,20 @@ throw new Error('Method not implemented.');
       this.trackId = id ? +id : null;
       this.loadTrackData();
     });
-    // Subscribe trạng thái player toàn cục
+    this.playlistService.GetPlaylistMenu().subscribe({
+      next: (playlists) => {
+        this.playlists = playlists;
+        console.log('Playlists fetched successfully:', playlists);
+      },
+      error: (error) => {
+        console.error('Error fetching playlists:', error);
+      }
+    });
+    // Cập nhật isLiked khi component được khởi tạo
+    this.updateLikeStatus();
+
     this.playerSub = this.playerService.currentTrack$.subscribe(track => {
       if (track && this.trackDetail && track.id === this.trackDetail.trackId) {
-        // Lấy currentTime và duration từ audio element toàn cục
         const audio = document.getElementById('global-audio') as HTMLAudioElement;
         if (audio) {
           this.playerCurrentTime = audio.currentTime;
@@ -60,7 +114,6 @@ throw new Error('Method not implemented.');
     this.playerService.isPlaying$.subscribe(isPlaying => {
       this.playerIsPlaying = isPlaying;
     });
-    // Lắng nghe sự kiện timeupdate để cập nhật tiến độ
     setInterval(() => {
       const audio = document.getElementById('global-audio') as HTMLAudioElement;
       const currentTrack = this.playerService['currentTrackSubject']?.value;
@@ -69,6 +122,21 @@ throw new Error('Method not implemented.');
         this.playerDuration = audio.duration;
       }
     }, 500);
+  }
+
+  // Method mới để cập nhật trạng thái like
+  private updateLikeStatus() {
+    if (this.trackId) {
+      this.likeTrackService.IsLikeTrack(this.trackId).subscribe({
+        next: (isLiked: boolean) => {
+          this.isLiked = isLiked;
+          console.log('Track like status updated:', isLiked);
+        },
+        error: (error: any) => {
+          console.error('Error checking like status:', error);
+        }
+      });
+    }
   }
 
   loadTrackData() {
@@ -91,6 +159,10 @@ throw new Error('Method not implemented.');
                   };
                   this.playerService.setTrack(playerTrack);
                 }
+
+                // Cập nhật trạng thái like sau khi load track data
+                this.updateLikeStatus();
+
                 this.trackService.GetAlbumByArtist(this.artistDetail.userId).subscribe({
                   next: (albums) => {
                     this.albums = albums;
