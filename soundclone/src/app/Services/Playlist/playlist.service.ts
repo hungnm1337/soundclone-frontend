@@ -30,6 +30,16 @@ export interface PlaylistCreateInput {
   isPublish: boolean;
 }
 
+export interface PlaylistDetailDTO {
+  playlistId: number;
+  title: string;
+  picturePlaylistUrl: string;
+  trackQuantity: number;
+  isPublish: boolean;
+  artistName : string;
+  artistId : number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -68,6 +78,15 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
     });
 
     return this.http.get<PlaylistMenu[]>(`${this.apiUrl}/playlist-menu?userId=${userId}`, { headers });
+  }
+
+  GetPlaylistDetail(playlistId: number): Observable<PlaylistDetailDTO> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.get<PlaylistDetailDTO>(`${this.apiUrl}/playlist-detail/${playlistId}`, { headers });
   }
 
   CreatePlaylist(playlist: PlaylistCreateInput): Observable<PlaylistDTO> {

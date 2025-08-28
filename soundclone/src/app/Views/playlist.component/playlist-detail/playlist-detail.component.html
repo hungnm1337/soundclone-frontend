@@ -1,1 +1,56 @@
-<p>playlist-detail works!</p>
+  <div class="w-full max-w-6xl mx-auto p-4 md:p-6 bg-white/60 dark:bg-zinc-900/60 backdrop-blur rounded-xl shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+      <div class="relative group w-40 h-40 md:w-48 md:h-48 shrink-0">
+        <img [src]="playlistDetail?.picturePlaylistUrl"
+             alt="Playlist cover"
+             class="w-full h-full object-cover rounded-lg ring-1 ring-zinc-200 dark:ring-zinc-800 shadow-sm group-hover:shadow transition" />
+        @if(playlistDetail?.trackQuantity === 0){
+          <div class="absolute inset-0 rounded-lg bg-gradient-to-t from-black/40 to-transparent flex items-end justify-start p-2">
+            <span class="text-xs text-white/90">No tracks yet</span>
+          </div>
+        }
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start gap-2 flex-wrap">
+          <h3 class="text-2xl md:text-3xl font-bold tracking-tight truncate">{{playlistDetail?.title}}</h3>
+          @if(!playlistDetail?.isPublish){
+            <span class="inline-flex items-center gap-1 px-2 py-3 rounded-md text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200" title="Private playlist">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
+                <path fill-rule="evenodd" d="M12 1.5a4.5 4.5 0 00-4.5 4.5v3H6a1.5 1.5 0 00-1.5 1.5v9A1.5 1.5 0 006 21h12a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0018 9h-1.5V6A4.5 4.5 0 0012 1.5zm-3 7.5V6a3 3 0 116 0v3H9z" clip-rule="evenodd" />
+              </svg>
+              Private
+            </span>
+          }
+        </div>
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300 hover:underline cursor-pointer">{{playlistDetail?.artistName}}</p>
+
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <div class="relative group">
+            <button
+              class="p-2 mr-2 rounded-full shadow transition bg-pink-200 text-pink-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+              </svg>
+            </button>
+            <!-- Tooltip hiển thị trên nút
+            <span
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-10">
+              {{ isLiked ? 'Unlike track' : 'Like track' }}
+            </span> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <div class="flex items-center justify-between">
+        <h4 class="text-lg font-semibold">Tracks</h4>
+        <span class="text-xs text-zinc-500">{{playlistDetail?.trackQuantity}} total</span>
+      </div>
+      <div class="mt-3">
+        <app-list-track [tracks]="trackInPlaylist"></app-list-track>
+      </div>
+    </div>
+  </div>

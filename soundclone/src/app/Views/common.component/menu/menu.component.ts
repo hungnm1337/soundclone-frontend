@@ -12,6 +12,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './menu.component.html'
 })
 export class MenuComponent implements OnInit {
+  goToPlaylist(playlistId: number) {
+    this.router.navigate(['/home/playlist', playlistId]);
+  }
+  goToLiked() {
+      this.router.navigate(['/home/liked']);
+  }
   goHome() {
     this.router.navigate(['/home']);
   }

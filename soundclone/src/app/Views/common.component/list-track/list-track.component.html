@@ -1,1 +1,18 @@
-<p>list-track works!</p>
+<div class="flex flex-col divide-y">
+  @if (tracks.length>0) {
+    @for (track of tracks; track $index) {
+      <div (click)="onTrackClick(track.trackId)" class="flex items-center gap-3 py-3 cursor-pointer">
+        <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+          <img [src]="track.coverArtUrl" class="w-full h-full object-cover">
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="font-medium text-gray-900 truncate">{{ track.title}}</p>
+          <p class="text-sm text-gray-600 truncate">{{ track.artistName}}</p>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="text-gray-500 text-sm py-6 text-center">No tracks</div>
+  }
+
+</div>

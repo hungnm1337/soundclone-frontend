@@ -8,6 +8,9 @@ import { ContentComponent } from './Views/common.component/content/content.compo
 import { ServicesComponent } from './Views/common.component/services/services.component';
 import { TrackDetailComponent } from './Views/Track/track-detail/track-detail.component';
 import { ProfileComponent } from './Views/User.conponent/profile/profile.component';
+import { ResultSearchComponent } from './Views/common.component/result-search/result-search.component';
+import { LikedComponent } from './Views/common.component/liked/liked.component';
+import { PlaylistDetailComponent } from './Views/playlist.component/playlist-detail/playlist-detail.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
@@ -16,7 +19,10 @@ export const routes: Routes = [
       {path: 'track-details/:id', component: TrackDetailComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'services', component: ServicesComponent},
-      { path: '', component: ContentComponent },
+      {path: 'result', component: ResultSearchComponent},
+      {path: 'liked', component: LikedComponent},
+      {path: 'playlist/:id', component: PlaylistDetailComponent},
+      {path: '', component: ContentComponent },
     ]
   },
   {path: 'login', component: SignInComponent},

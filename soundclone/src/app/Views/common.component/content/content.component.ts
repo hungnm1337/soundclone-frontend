@@ -37,9 +37,6 @@ export class ContentComponent implements OnInit {
   }
 
   OpenTrack(trackId: number) {
-    // Logic to open the track details, e.g., navigate to a track details page
-    console.log('Opening track with ID:', trackId);
-
     this.router.navigate(['home/track-details', trackId]);
   }
 }

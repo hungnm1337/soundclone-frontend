@@ -1,0 +1,21 @@
+@if(likedTracks && likedTracks.length > 0) {
+  <div class="bg-">
+      <h4 class="text-xl font-bold text-gray-900 mt-6">Liked Tracks</h4>
+    <div>
+      <app-list-track  [tracks]="likedTracks"></app-list-track>
+    </div>
+  </div>
+} @else {
+  <p class="text-gray-500">No liked tracks found.</p>
+}
+
+@if(likePlaylist && likePlaylist.length > 0) {
+  <div class="bg-">
+      <h4 class="text-xl font-bold text-gray-900 mt-6">Liked Playlists</h4>
+    <div>
+      <app-list-playlist [playlists]="likePlaylist"></app-list-playlist>
+    </div>
+  </div>
+} @else {
+  <p class="text-gray-500">No liked playlists found.</p>
+}

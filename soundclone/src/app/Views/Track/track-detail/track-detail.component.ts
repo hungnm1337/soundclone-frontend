@@ -24,13 +24,14 @@ export class TrackDetailComponent implements OnInit {
     if (this.trackId) {
       this.likeTrackService.ToggleUserLikeTrackStatus(this.trackId).subscribe({
         next: (isLiked: boolean) => {
-          this.isLiked = isLiked;
+          this.isLiked = !this.isLiked;
           console.log('Like track response:', isLiked);
         },
         error: (error: any) => {
           console.error('Error liking track:', error);
         }
       });
+      this.updateLikeStatus();
     }
   }
   public playlists: PlaylistMenu[] = [];
