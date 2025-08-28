@@ -1,0 +1,102 @@
+<div class="search-results-container">
+  <!-- Header with Search Query -->
+  <div class="mb-3">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Search Results</h1>
+        @if(searchQuery) {
+          <p class="mt-2 text-lg text-gray-600">
+            Results for: <span class="font-semibold text-purple-600">"{{ searchQuery }}"</span>
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if(isLoading) {
+    <div class="flex flex-col items-center justify-center py-16">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <p class="mt-4 text-gray-600">Searching...</p>
+    </div>
+  }
+
+  <!-- Filter Tabs -->
+  @if(!isLoading && (trackResults.length > 0 || playlistResults.length > 0 || artistResults.length > 0)) {
+    <div class="mb-8">
+      <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8">
+          @for(filter of filterOptions; track filter.value) {
+            <button
+              (click)="setFilter(filter.value)"
+              class="filter-tab py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200"
+              [class]="activeFilter === filter.value
+                ? 'border-purple-500 text-purple-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'">
+              {{ filter.label }}
+              <span class="ml-2 bg-gray-100 text-gray-900 py-0.5 px-2.5 rounded-full text-xs font-medium">
+                {{ filter.count }}
+              </span>
+            </button>
+          }
+        </nav>
+      </div>
+    </div>
+  }
+
+  <!-- Results Content -->
+  @if(!isLoading) {
+    <!-- Tracks Section -->
+    @if(shouldShowSection('tracks') && trackResults.length > 0) {
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Tracks</h3>
+        <app-list-track [tracks]="trackResults"></app-list-track>
+      </div>
+    }
+
+    <!-- Playlists Section -->
+    @if(shouldShowSection('playlists') && playlistResults.length > 0) {
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Playlists</h3>
+        <app-list-playlist [playlists]="playlistResults"></app-list-playlist>
+      </div>
+    }
+
+    <!-- Artists Section -->
+    @if(shouldShowSection('artists') && artistResults.length > 0) {
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Artists</h3>
+        <app-list-artist [artistResults]="artistResults"></app-list-artist>
+      </div>
+    }
+
+    <!-- No Results for Selected Filter -->
+    @if(!shouldShowSection('all') &&
+         ((activeFilter === 'tracks' && trackResults.length === 0) ||
+          (activeFilter === 'playlists' && playlistResults.length === 0) ||
+          (activeFilter === 'artists' && artistResults.length === 0))) {
+      <div class="text-center py-16">
+        <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900">No Results Found</h3>
+        <p class="mt-2 text-gray-500">
+          No {{ activeFilter }} found for "{{ searchQuery }}". Try different keywords.
+        </p>
+      </div>
+    }
+
+    <!-- No Results at All -->
+    @if(trackResults.length === 0 && playlistResults.length === 0 && artistResults.length === 0) {
+      <div class="text-center py-16">
+        <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900">No Results Found</h3>
+        <p class="mt-2 text-gray-500">
+          No results found for "{{ searchQuery }}". Try different keywords.
+        </p>
+      </div>
+    }
+  }
+</div>

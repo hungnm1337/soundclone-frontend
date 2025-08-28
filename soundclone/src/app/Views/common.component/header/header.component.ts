@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, UserInfo } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 interface Notification {
   id: number;
@@ -15,7 +16,7 @@ interface Notification {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -70,6 +71,11 @@ showProfile() {
     }
   ];
 
+  // Search functionality
+  searchQuery: string = '';
+  searchError: string = '';
+  private errorTimer: any;
+
   constructor(private router: Router, private authService: AuthService) {}
 
   @HostListener('document:click', ['$event'])
@@ -96,6 +102,11 @@ showProfile() {
   ngOnDestroy() {
     if (this.loginSubscription) {
       this.loginSubscription.unsubscribe();
+    }
+
+    // Clear error timer
+    if (this.errorTimer) {
+      clearTimeout(this.errorTimer);
     }
   }
 
@@ -207,5 +218,67 @@ showProfile() {
 
   goHome() {
     this.router.navigate(['/home']);
+  }
+
+  // Search methods
+  onSearchInput(event: any) {
+    this.searchQuery = event.target.value;
+    this.clearError(); // Clear error when user types
+  }
+
+  onSearchKeyPress(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.performSearch();
+    }
+  }
+
+  performSearch() {
+    // Validate search query
+    if (!this.searchQuery || this.searchQuery.trim() === '') {
+      this.showError('Vui lòng nhập từ khóa tìm kiếm');
+      return;
+    }
+
+    // Remove leading/trailing whitespace
+    const trimmedQuery = this.searchQuery.trim();
+
+    if (trimmedQuery.length < 1) {
+      this.showError('Từ khóa tìm kiếm phải có ít nhất 1 ký tự');
+      return;
+    }
+
+    // Clear any previous errors
+    this.clearError();
+
+    // Navigate to search results with query parameter
+    this.router.navigate(['/home/result'], {
+      queryParams: { q: trimmedQuery }
+    });
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.clearError();
+  }
+
+  private showError(message: string) {
+    this.searchError = message;
+
+    // Auto-hide error after 1 second
+    if (this.errorTimer) {
+      clearTimeout(this.errorTimer);
+    }
+
+    this.errorTimer = setTimeout(() => {
+      this.searchError = '';
+    }, 1000);
+  }
+
+  private clearError() {
+    this.searchError = '';
+    if (this.errorTimer) {
+      clearTimeout(this.errorTimer);
+      this.errorTimer = null;
+    }
   }
 }

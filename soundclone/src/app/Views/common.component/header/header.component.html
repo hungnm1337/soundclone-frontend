@@ -12,17 +12,43 @@
       <div class="flex-1 flex justify-center ml-20">
         <div class="w-10/12">
           <div class="relative">
-            <input
+                        <input
               type="text"
+              [(ngModel)]="searchQuery"
+              (input)="onSearchInput($event)"
+              (keypress)="onSearchKeyPress($event)"
               placeholder="Search music, artists, albums..."
-              class="w-10/12 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              class="w-10/12 pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent search-input"
+              [class.error]="searchError"
             >
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-5 w-5 text-gray-400 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
               </svg>
             </div>
+
+            <!-- Clear button -->
+            @if(searchQuery) {
+              <button
+                (click)="clearSearch()"
+                class="absolute inset-y-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 clear-button"
+                type="button">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            }
           </div>
+
+          <!-- Error message -->
+          @if(searchError) {
+            <div class="mb-1 text-sm text-red-600 flex items-center error-message">
+              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              {{ searchError }}
+            </div>
+          }
         </div>
       </div>
 

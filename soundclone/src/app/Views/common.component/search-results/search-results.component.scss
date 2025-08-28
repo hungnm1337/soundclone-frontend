@@ -1,0 +1,81 @@
+.search-results-container {
+  max-width: 7xl;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+// Filter tabs styling
+.filter-tab {
+  position: relative;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    font-weight: 600;
+  }
+}
+
+// Loading animation
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .search-results-container {
+    padding: 1rem;
+  }
+
+  .filter-tab {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+// Section headers
+h3 {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 5rem;
+    height: 0.25rem;
+    background: linear-gradient(90deg, #8b5cf6, #a855f7);
+    border-radius: 0.125rem;
+  }
+}
+
+// Button hover effects
+button {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+}
+
+// Search query highlight
+.search-query-highlight {
+  background: linear-gradient(120deg, #fbbf24, #f59e0b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

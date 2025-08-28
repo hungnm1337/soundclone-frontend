@@ -1,16 +1,17 @@
 <div class="flex flex-col divide-y">
-  <div *ngIf="playlists && playlists.length; else noTracks">
-    <div *ngFor="let playlist of playlists; let i = index" class="flex items-center gap-3 py-3 shadow-sm">
-      <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
-        <img [src]="playlist.picturePlaylistUrl" class="w-full h-full object-cover" alt="Cover art">
+  @if(playlists && playlists.length) {
+    @for(playlist of playlists; track playlist.playlistId) {
+      <div (click)="changePlaylist(playlist.playlistId)" class="flex hover:cursor-pointer  items-center gap-3 py-3 shadow-sm">
+        <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+          <img [src]="playlist.picturePlaylistUrl" class="w-full h-full object-cover" alt="Cover art">
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="font-medium text-gray-900 truncate hover:underline">{{ playlist.title }}</p>
+          <p class="text-sm text-gray-600 truncate">{{ playlist.artistName }}</p>
+        </div>
       </div>
-      <div class="min-w-0 flex-1">
-        <p class="font-medium text-gray-900 truncate">{{ playlist.title }}</p>
-        <p class="text-sm text-gray-600 truncate">{{ playlist.artistName }}</p>
-      </div>
-    </div>
-  </div>
-  <ng-template #noTracks>
+    }
+  } @else {
     <div class="text-gray-500 text-sm py-6 text-center">No Playlist</div>
-  </ng-template>
+  }
 </div>
