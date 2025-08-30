@@ -47,7 +47,7 @@ export class TrackDetailComponent implements OnInit {
   public playerDuration: number = 0;
   public playerIsPlaying: boolean = false;
   private playerSub?: any;
-
+  public likeTrackCount: number = 0;
   constructor(private route: ActivatedRoute,
      private trackService: TrackService,
      private artistService: ArtistService,
@@ -125,16 +125,30 @@ export class TrackDetailComponent implements OnInit {
     }, 500);
   }
 
-  // Method mới để cập nhật trạng thái like
   private updateLikeStatus() {
     if (this.trackId) {
       this.likeTrackService.IsLikeTrack(this.trackId).subscribe({
         next: (isLiked: boolean) => {
           this.isLiked = isLiked;
+          this.updateLikeTrackCount();
           console.log('Track like status updated:', isLiked);
         },
         error: (error: any) => {
           console.error('Error checking like status:', error);
+        }
+      });
+    }
+  }
+
+  updateLikeTrackCount() {
+    if (this.trackId) {
+      this.likeTrackService.GetLikeTrackCount(this.trackId).subscribe({
+        next: (count: number) => {
+          this.likeTrackCount = count;
+          console.log('Track like count updated:', count);
+        },
+        error: (error: any) => {
+          console.error('Error fetching like count:', error);
         }
       });
     }

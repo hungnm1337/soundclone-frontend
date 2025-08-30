@@ -4,6 +4,7 @@ import { PlaylistService, PlaylistDetailDTO } from '../../../Services/Playlist/p
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListTrackDTO } from '../../../Services/ListData/list-data.service';
 import { ListDataService } from '../../../Services/ListData/list-data.service';
+import { LikePlaylistService } from '../../../Services/LikePlaylist/like-playlist.service';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
@@ -15,10 +16,13 @@ export class PlaylistDetailComponent {
   playlistDetail: PlaylistDetailDTO | undefined;
   playlistId: number | null = null;
   trackInPlaylist : ListTrackDTO[] = [];
+  likeCount:number = 0;
   constructor(private playlistService: PlaylistService
     , private route: ActivatedRoute
     , private router: Router
-    , private listDataService: ListDataService) {
+    , private listDataService: ListDataService
+    , private likePlaylistService: LikePlaylistService
+  ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.playlistId = id ? +id : null;
@@ -29,10 +33,19 @@ export class PlaylistDetailComponent {
             this.trackInPlaylist = tracks;
           });
         });
+        this.updateLikeCount();
       }else{
         this.router.navigate(['/error']);
       }
     });
 
   }
+  updateLikeCount() {
+    if (this.playlistId) {
+      this.likePlaylistService.GetLikePlaylistCount(this.playlistId).subscribe(count => {
+        this.likeCount = count;
+      });
+    }
+  }
+
 }

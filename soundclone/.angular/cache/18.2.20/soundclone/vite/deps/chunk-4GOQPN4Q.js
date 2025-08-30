@@ -2,15 +2,13 @@ import {
   BehaviorSubject,
   Subject,
   Subscription,
+  __spreadProps,
+  __spreadValues,
   first,
   map
-} from "./chunk-QYZCK3CB.js";
-import {
-  __spreadProps,
-  __spreadValues
-} from "./chunk-EPAV4CNQ.js";
+} from "./chunk-F5SAVA3V.js";
 
-// node_modules/@angular/core/fesm2022/primitives/signals.mjs
+// ../../../../node_modules/@angular/core/fesm2022/primitives/signals.mjs
 function defaultEquals(a, b) {
   return Object.is(a, b);
 }
@@ -375,7 +373,7 @@ var WATCH_NODE = (() => {
   });
 })();
 
-// node_modules/@angular/core/fesm2022/primitives/event-dispatch.mjs
+// ../../../../node_modules/@angular/core/fesm2022/primitives/event-dispatch.mjs
 var Attribute = {
   /**
    * The jsaction attribute defines a mapping of a DOM event to a
@@ -1549,7 +1547,7 @@ function clearAppScopedEarlyEventContract(appId, dataContainer = window) {
   dataContainer._ejsas[appId] = void 0;
 }
 
-// node_modules/@angular/core/fesm2022/core.mjs
+// ../../../../node_modules/@angular/core/fesm2022/core.mjs
 var ERROR_DETAILS_PAGE_BASE_URL = "https://angular.dev/errors";
 var XSS_SECURITY_URL = "https://g.co/ng/security#xss";
 var RuntimeError = class extends Error {
@@ -24558,4 +24556,4 @@ export {
    * found in the LICENSE file at https://angular.dev/license
    *)
 */
-//# sourceMappingURL=chunk-KKLILO6Z.js.map
+//# sourceMappingURL=chunk-4GOQPN4Q.js.map
