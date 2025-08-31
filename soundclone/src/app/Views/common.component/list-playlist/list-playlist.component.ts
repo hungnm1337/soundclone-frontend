@@ -11,10 +11,33 @@ import { Router } from '@angular/router';
   styleUrl: './list-playlist.component.scss'
 })
 export class ListPlaylistComponent {
-changePlaylist(playlistId: number) {
-    this.router.navigate(['home/playlist', playlistId]);
-}
-constructor(private router: Router) { }
   @Input() playlists!: ListPlaylistDTO[];
 
+  showAllPlaylists: boolean = false;
+  readonly defaultLimit: number = 5;
+
+  get displayedPlaylists(): ListPlaylistDTO[] {
+    if (this.showAllPlaylists || this.playlists.length <= this.defaultLimit) {
+      return this.playlists;
+    }
+    return this.playlists.slice(0, this.defaultLimit);
+  }
+
+  get hasMorePlaylists(): boolean {
+    return this.playlists.length > this.defaultLimit;
+  }
+
+  get remainingCount(): number {
+    return this.playlists.length - this.defaultLimit;
+  }
+
+  toggleShowAll() {
+    this.showAllPlaylists = !this.showAllPlaylists;
+  }
+
+  changePlaylist(playlistId: number) {
+    this.router.navigate(['home/playlist', playlistId]);
+  }
+
+  constructor(private router: Router) { }
 }

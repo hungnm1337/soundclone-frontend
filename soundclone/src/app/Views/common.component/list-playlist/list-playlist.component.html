@@ -1,7 +1,7 @@
 <div class="flex flex-col divide-y">
   @if(playlists && playlists.length) {
-    @for(playlist of playlists; track playlist.playlistId) {
-      <div (click)="changePlaylist(playlist.playlistId)" class="flex hover:cursor-pointer  items-center gap-3 py-3 shadow-sm">
+    @for(playlist of displayedPlaylists; track playlist.playlistId) {
+      <div (click)="changePlaylist(playlist.playlistId)" class="flex hover:cursor-pointer items-center gap-3 py-3 shadow-sm hover:bg-gray-50 transition-colors">
         <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
           <img [src]="playlist.picturePlaylistUrl" class="w-full h-full object-cover" alt="Cover art">
         </div>
@@ -9,6 +9,20 @@
           <p class="font-medium text-gray-900 truncate hover:underline">{{ playlist.title }}</p>
           <p class="text-sm text-gray-600 truncate">{{ playlist.artistName }}</p>
         </div>
+      </div>
+    }
+
+    @if (hasMorePlaylists) {
+      <div class="py-3">
+        <button
+          (click)="toggleShowAll()"
+          class="w-full text-center py-2 px-4 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors">
+          @if (showAllPlaylists) {
+            <span>Hide</span>
+          } @else {
+            <span>Show more {{ remainingCount }} playlist</span>
+          }
+        </button>
       </div>
     }
   } @else {

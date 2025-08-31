@@ -1,1 +1,182 @@
-<p>artist-profile works!</p>
+@if (artistDetail) {
+  <!-- Artist Profile Header -->
+  <div class="w-full max-w-6xl mx-auto p-4 md:p-6">
+    <!-- Profile Card -->
+    <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 overflow-hidden">
+      <!-- Cover Image Section -->
+      <div class="relative h-48 md:h-64 overflow-hidden">
+        <!-- Background Image (Blurred) -->
+        <img
+          [src]="artistDetail.profilePictureUrl"
+          [alt]="artistDetail.name"
+          class="absolute inset-0 w-full h-full object-cover filter blur-sm scale-110">
+                 <!-- Gradient overlay - darker at bottom for better text readability -->
+         <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+        <div class="absolute bottom-4 left-4 md:left-6 flex items-end space-x-4">
+          <!-- Profile Picture -->
+          <div class="relative">
+            <img
+              [src]="artistDetail.profilePictureUrl"
+              [alt]="artistDetail.name"
+              class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white/90 shadow-lg object-cover">
+
+          </div>
+
+          <!-- Artist Info -->
+          <div class="text-white mb-2">
+            <h1 class="text-2xl md:text-4xl font-bold mb-2 drop-shadow-lg">{{ artistDetail.name }}</h1>
+            @if (artistDetail.bio) {
+              <p class="text-white/90 text-sm md:text-base max-w-md line-clamp-2 pt-2">{{ artistDetail.bio }}</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Details -->
+      <div class="p-4 md:p-6">
+        <!-- Stats Row -->
+        <div class="flex flex-wrap items-center justify-between mb-6 p-4 bg-gray-50 dark:bg-zinc-800/50 rounded-xl">
+          <div class="flex items-center space-x-6">
+            <div class="text-center">
+              <div class=" text-gray-800 dark:text-white inline-flex">{{ artistDetail.followerQuantity }} <p class="text-gray-500 dark:text-gray-400 pl-1"> Followers</p></div>
+            </div>
+            <div class="text-center">
+              <div class=" text-gray-800 dark:text-white inline-flex">{{ artistDetail.followingQuantity }} <p class="text-gray-500 dark:text-gray-400 pl-1"> Following</p></div>
+            </div>
+          </div>
+
+          <!-- Follow Button -->
+          <button class="px-6 py-2 w-min border-gray-800 border-2 hover:bg-gray-300 font-semibold text-gray-700 rounded-lg transition-colors duration-300">
+            Follow
+          </button>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          @if (artistDetail.email) {
+            <div class="flex items-center space-x-3 p-3 rounded-lg">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
+                </svg>
+
+              </div>
+              <div>
+                <div class="text-xs font-medium">Email</div>
+                <div class="text-sm text-gray-900 dark:text-white">{{ artistDetail.email }}</div>
+              </div>
+            </div>
+          }
+
+          @if (artistDetail.phoneNumber) {
+            <div class="flex items-center space-x-3 p-3 rounded-lg">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                </svg>
+
+              </div>
+              <div>
+                <div class="text-xs font-medium">Phone</div>
+                <div class="text-sm text-gray-900 dark:text-white">{{ artistDetail.phoneNumber }}</div>
+              </div>
+            </div>
+          }
+
+          @if (artistDetail.dayOfBirth) {
+            <div class="flex items-center space-x-3 p-3 dark:bg-purple-900/20 rounded-lg">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                </svg>
+
+              </div>
+              <div>
+                <div class="text-xs font-medium">Birthday</div>
+                <div class="text-sm text-gray-900 dark:text-white">{{ artistDetail.dayOfBirth | date:'mediumDate' }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="mt-6 space-y-6">
+      <!-- Tracks Section -->
+      @if (tracks && tracks.length > 0) {
+        <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
+            <div class="flex items-center justify-between">
+              <h3 class=" font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
+                </svg>
+
+                <span>Tracks</span>
+              </h3>
+              <span class="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-full">
+                {{ tracks.length }} track{{ tracks.length !== 1 ? 's' : '' }}
+              </span>
+            </div>
+          </div>
+          <div class="p-6">
+            <app-list-track [tracks]="tracks"></app-list-track>
+          </div>
+        </div>
+      } @else {
+        <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 p-8 text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No tracks available</h3>
+          <p class="text-gray-500 dark:text-gray-400">This artist hasn't uploaded any tracks yet.</p>
+        </div>
+      }
+
+      <!-- Playlists Section -->
+      @if (playlists && playlists.length > 0) {
+        <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-zinc-700">
+            <div class="flex items-center justify-between">
+              <h3 class=" font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.242 5.992h12m-12 6.003H20.24m-12 5.999h12M4.117 7.495v-3.75H2.99m1.125 3.75H2.99m1.125 0H5.24m-1.92 2.577a1.125 1.125 0 1 1 1.591 1.59l-1.83 1.83h2.16M2.99 15.745h1.125a1.125 1.125 0 0 1 0 2.25H3.74m0-.002h.375a1.125 1.125 0 0 1 0 2.25H2.99" />
+                </svg>
+
+                <span>Playlists</span>
+              </h3>
+              <span class="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-full">
+                {{ playlists.length }} playlist{{ playlists.length !== 1 ? 's' : '' }}
+              </span>
+            </div>
+          </div>
+          <div class="p-6">
+            <app-list-playlist [playlists]="playlists"></app-list-playlist>
+          </div>
+        </div>
+      } @else {
+        <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 p-8 text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No playlists available</h3>
+          <p class="text-gray-500 dark:text-gray-400">This artist hasn't created any playlists yet.</p>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <!-- Loading State -->
+  <div class="w-full max-w-6xl mx-auto p-4 md:p-6">
+    <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur rounded-2xl shadow-xl border border-gray-200/50 dark:border-zinc-700/50 p-8 text-center">
+      <div class="w-16 h-16 mx-auto mb-4 bg-gray-200 dark:bg-zinc-700 rounded-full animate-pulse"></div>
+      <div class="h-6 bg-gray-200 dark:bg-zinc-700 rounded mb-2 animate-pulse"></div>
+      <div class="h-4 bg-gray-200 dark:bg-zinc-700 rounded w-3/4 mx-auto animate-pulse"></div>
+    </div>
+  </div>
+}

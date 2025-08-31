@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,13 @@ export class LikeTrackService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   public ToggleUserLikeTrackStatus(trackId: number): Observable<boolean> {
+     const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.authService.getToken()}`
+        });
     const userId = this.authService.getCurrentUserUserId() || 0;
     const body: LikeTrackInput = { trackId, userId };
-    return this.http.put<boolean>(`${this.apiUrl}/toggleStatus`, body);
+    return this.http.put<boolean>(`${this.apiUrl}/toggleStatus`, body, { headers });
   }
 
   public IsLikeTrack(trackId: number): Observable<boolean> {

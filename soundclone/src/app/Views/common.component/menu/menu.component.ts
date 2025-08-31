@@ -63,12 +63,34 @@ export class MenuComponent implements OnInit {
   createPlaylist() {
     const isLoggedIn = this.authService.isLoggedIn();
     if (isLoggedIn) {
+      // Reset all form data and variables before opening popup
+      this.resetCreatePlaylistForm();
       this.showCreatePlaylistPopup = true;
-      this.newPlaylist = { title: '', picturePlaylistUrl: undefined as any, isPublish: false };
-      this.createPlaylistError = null;
     } else {
       this.router.navigate(['/login']);
     }
+  }
+
+  resetCreatePlaylistForm() {
+    // Reset form to initial state
+    this.createPlaylistForm.reset({
+      title: '',
+      isPublish: false
+    });
+
+    // Reset image-related variables
+    this.playlistImageFile = null;
+    this.playlistImagePreview = null;
+
+    // Reset error message
+    this.createPlaylistError = null;
+
+    // Reset newPlaylist object
+    this.newPlaylist = {
+      title: '',
+      picturePlaylistUrl: undefined as any,
+      isPublish: false
+    };
   }
 
   onPlaylistFileChange(event: any) {
@@ -108,6 +130,8 @@ export class MenuComponent implements OnInit {
       next: (playlist) => {
         this.isCreatingPlaylist = false;
         this.showCreatePlaylistPopup = false;
+        // Reset form after successful creation
+        this.resetCreatePlaylistForm();
         // Reload playlists
         this.playlistService.GetPlaylistMenu().subscribe(data => {
           this.playlists = data;
@@ -122,8 +146,8 @@ export class MenuComponent implements OnInit {
 
   closeCreatePlaylistPopup() {
     this.showCreatePlaylistPopup = false;
-    this.playlistImageFile = null;
-    this.playlistImagePreview = null;
+    // Reset form when closing popup to ensure clean state for next open
+    this.resetCreatePlaylistForm();
   }
 
   removePlaylistImage() {

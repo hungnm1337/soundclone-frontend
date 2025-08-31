@@ -118,7 +118,7 @@
 
         </div>
         <div class="flex flex-row justify-center items-center gap-4 mt-6 w-full">
-          <button class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
+          <button (click)="ViewProfile(artistDetail?.userId || 0)" class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
             View Profile
           </button>
         </div>

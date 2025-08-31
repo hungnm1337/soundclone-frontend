@@ -15,6 +15,7 @@ import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Serv
   styleUrl: './track-detail.component.scss'
 })
 export class TrackDetailComponent implements OnInit {
+
   onAddToPlaylist() {
     this.isPlaylistModalOpen = true;
     console.log('Add to playlist clicked');
@@ -201,6 +202,11 @@ export class TrackDetailComponent implements OnInit {
       console.error('Track ID is not valid');
     }
   }
+
+  ViewProfile(artistId: number) {
+    this.router.navigate(['home/artist-profile', artistId]);
+  }
+
   formatTime(time: number): string {
     if (!time || isNaN(time)) return '00:00';
     const minutes = Math.floor(time / 60);

@@ -8,6 +8,10 @@ export interface ArtistDetailDTO{
   profilePictureUrl: string;
   followingQuantity: number
   followerQuantity: number;
+  bio:string;
+  dayOfBirth: Date;
+  email: string;
+  phoneNumber: string;
 }
 
 export interface Artist {
@@ -29,6 +33,6 @@ export class ArtistService {
   }
 
   GetArtistDetail(artistId: number): Observable<ArtistDetailDTO> {
-    return this.http.get<ArtistDetailDTO>(`${this.apiUrl}/get/${artistId}`);
+    return this.http.get<ArtistDetailDTO>(`${this.apiUrl}/get-artist-detail/${artistId}`);
   }
 }

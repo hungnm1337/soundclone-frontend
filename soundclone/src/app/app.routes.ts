@@ -11,12 +11,14 @@ import { ProfileComponent } from './Views/User.conponent/profile/profile.compone
 import { LikedComponent } from './Views/common.component/liked/liked.component';
 import { PlaylistDetailComponent } from './Views/playlist.component/playlist-detail/playlist-detail.component';
 import { SearchResultsComponent } from './Views/common.component/search-results/search-results.component';
+import { ArtistProfileComponent } from './Views/User.conponent/artist-profile/artist-profile.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
       {path: 'createtrack', component: CreateTrackComponent},
       {path: 'track-details/:id', component: TrackDetailComponent},
+      {path: 'artist-profile/:id', component: ArtistProfileComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'services', component: ServicesComponent},
       {path: 'result', component: SearchResultsComponent},
