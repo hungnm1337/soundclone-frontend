@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PlaylistService, PlaylistMenu, PlaylistCreateInput } from '../../../Services/Playlist/playlist.service';
+import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { AuthService } from '../../../Services/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -28,7 +29,8 @@ export class MenuComponent implements OnInit {
     private router: Router,
     private playlistService: PlaylistService,
     private authService: AuthService,
-    private fb: FormBuilder // Thêm FormBuilder
+    private fb: FormBuilder, // Thêm FormBuilder
+    private playlistStateService: PlaylistStateService
   ) {
     this.createPlaylistForm = this.fb.group({
       title: ['', Validators.required],
@@ -36,14 +38,28 @@ export class MenuComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.playlistService.GetPlaylistMenu().subscribe(data => {
-      this.playlists = data;
+    this.loadPlaylists();
+
+    // Lắng nghe khi playlist bị xóa
+    this.playlistStateService.playlistDeleted$.subscribe(playlistId => {
+      if (playlistId) {
+        console.log('Playlist deleted, refreshing menu:', playlistId);
+        this.loadPlaylists();
+      }
     });
 
-    this.playlistService.playlistUpdated$.subscribe(() => {
-      this.playlistService.GetPlaylistMenu().subscribe(data => {
-        this.playlists = data;
-      });
+    // Lắng nghe khi playlist được cập nhật
+    this.playlistStateService.playlistUpdated$.subscribe(playlistId => {
+      if (playlistId) {
+        console.log('Playlist updated, refreshing menu:', playlistId);
+        this.loadPlaylists();
+      }
+    });
+  }
+
+  private loadPlaylists() {
+    this.playlistService.GetPlaylistMenu().subscribe(data => {
+      this.playlists = data;
     });
   }
   createTrack() {

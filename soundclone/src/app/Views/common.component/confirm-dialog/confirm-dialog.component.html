@@ -1,0 +1,43 @@
+@if (isOpen) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+    <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-xl p-6 w-full max-w-md mx-4 relative transform transition-all">
+      <!-- Close button -->
+      <button
+        (click)="onClose()"
+        class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Warning icon -->
+      <div class="flex justify-center mb-4">
+        <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="text-center mb-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Confirm Action</h3>
+        <p class="text-gray-600 dark:text-gray-300">{{ message }}</p>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex gap-3">
+        <button
+          (click)="onCancel()"
+          class="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-zinc-800 rounded-lg hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors">
+          {{ cancelText }}
+        </button>
+        <button
+          (click)="onConfirm()"
+          class="flex-1 px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

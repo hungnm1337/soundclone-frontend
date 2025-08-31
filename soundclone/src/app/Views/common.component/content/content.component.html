@@ -36,7 +36,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-6">
     @for (artit of artists; track $index) {
       <div class="flex flex-col items-center text-center cursor-pointer">
-        <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-3">
+        <div (click)="OpenArtist(artit.userId)" class="w-36 h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-3">
           <img
             [src]="artit.profilePictureUrl"
             [alt]="artit.name"

@@ -22,8 +22,12 @@ export class LikeTrackService {
 
   public IsLikeTrack(trackId: number): Observable<boolean> {
     const userId = this.authService.getCurrentUserUserId() || 0;
+    const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.authService.getToken()}`
+        });
     const body: LikeTrackInput = { trackId, userId };
-    return this.http.post<boolean>(`${this.apiUrl}/isLiked`, body);
+    return this.http.post<boolean>(`${this.apiUrl}/isLiked`, body,{headers});
   }
 
   public GetLikeTrackCount(trackId: number): Observable<number> {

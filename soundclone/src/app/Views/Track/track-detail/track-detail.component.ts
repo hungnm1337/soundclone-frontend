@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { PlayerService, PlayerTrack } from '../../../Services/Player/player.service';
 import { LikeTrackInput, LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
 import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Services/Playlist/playlist.service';
+import { AuthService } from '../../../Services/auth.service';
 @Component({
   selector: 'app-track-detail',
   standalone: true,
@@ -17,11 +18,26 @@ import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Serv
 export class TrackDetailComponent implements OnInit {
 
   onAddToPlaylist() {
-    this.isPlaylistModalOpen = true;
-    console.log('Add to playlist clicked');
+    this.playlistService.GetPlaylistMenu().subscribe({
+      next: (playlists) => {
+        this.playlists = playlists;
+        this.isPlaylistModalOpen = true;
+        console.log('Add to playlist clicked');
+      },
+      error: (error) => {
+        console.error('Error fetching playlists:', error);
+      }
+    });
   }
 
   onLikeTrack() {
+    // Kiểm tra đăng nhập trước khi cho phép like
+    if (!this.authService.isLoggedIn()) {
+      console.log('User not logged in, redirecting to login');
+      this.router.navigate(['/login']);
+      return;
+    }
+
     if (this.trackId) {
       this.likeTrackService.ToggleUserLikeTrackStatus(this.trackId).subscribe({
         next: (isLiked: boolean) => {
@@ -55,7 +71,8 @@ export class TrackDetailComponent implements OnInit {
      private router: Router,
      private playerService: PlayerService,
      private likeTrackService: LikeTrackService,
-     private playlistService: PlaylistService
+     private playlistService: PlaylistService,
+     private authService: AuthService
    ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -101,9 +118,15 @@ export class TrackDetailComponent implements OnInit {
         console.error('Error fetching playlists:', error);
       }
     });
-    // Cập nhật isLiked khi component được khởi tạo
-    this.updateLikeStatus();
+         // Cập nhật like count (luôn gọi dù có đăng nhập hay không)
+     this.updateLikeTrackCount();
 
+     // Chỉ cập nhật like status khi user đã đăng nhập
+     if (this.authService.isLoggedIn()) {
+       this.updateLikeStatus();
+     } else {
+       this.isLiked = false; // Set mặc định false cho user chưa đăng nhập
+     }
     this.playerSub = this.playerService.currentTrack$.subscribe(track => {
       if (track && this.trackDetail && track.id === this.trackDetail.trackId) {
         const audio = document.getElementById('global-audio') as HTMLAudioElement;
@@ -127,21 +150,30 @@ export class TrackDetailComponent implements OnInit {
   }
 
   private updateLikeStatus() {
+    // Chỉ gọi API khi user đã đăng nhập
+    if (!this.authService.isLoggedIn()) {
+      this.isLiked = false;
+      console.log('User not logged in, setting like status to false');
+      return;
+    }
+
     if (this.trackId) {
       this.likeTrackService.IsLikeTrack(this.trackId).subscribe({
         next: (isLiked: boolean) => {
           this.isLiked = isLiked;
-          this.updateLikeTrackCount();
+          this.updateLikeTrackCount(); // Cập nhật lại số lượng like sau khi biết trạng thái like
           console.log('Track like status updated:', isLiked);
         },
         error: (error: any) => {
           console.error('Error checking like status:', error);
+          this.isLiked = false; // Set default value on error
         }
       });
     }
   }
 
   updateLikeTrackCount() {
+    // Luôn gọi API để lấy số lượng like (dù có đăng nhập hay không)
     if (this.trackId) {
       this.likeTrackService.GetLikeTrackCount(this.trackId).subscribe({
         next: (count: number) => {
@@ -150,6 +182,7 @@ export class TrackDetailComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error fetching like count:', error);
+          this.likeTrackCount = 0; // Set default value on error
         }
       });
     }

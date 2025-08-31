@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
   templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit {
+  OpenArtist(artistId: number) {
+    this.router.navigate(['home/artist-profile', artistId]);
+  }
 
   constructor(private trackService: TrackService, private artistService: ArtistService, private router: Router) { }
   albums: Album[] = [];

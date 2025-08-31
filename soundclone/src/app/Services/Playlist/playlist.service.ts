@@ -30,6 +30,14 @@ export interface PlaylistCreateInput {
   isPublish: boolean;
 }
 
+export interface UpdatePlaylistDTO{
+  playlistId: number;
+  title: string;
+  picturePlaylistUrl: string;
+  isPublish: boolean;
+  userId: number;
+}
+
 export interface PlaylistDetailDTO {
   playlistId: number;
   title: string;
@@ -38,6 +46,11 @@ export interface PlaylistDetailDTO {
   isPublish: boolean;
   artistName : string;
   artistId : number;
+}
+
+export interface DeletePlaylistDTO{
+  playlistId: number;
+  userId: number;
 }
 
 @Injectable({
@@ -108,4 +121,26 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
       })
     );
   }
+  UpdatePlaylist(model: UpdatePlaylistDTO): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.put(`${this.apiUrl}/update-playlist`, model, { headers });
+  }
+
+  deletePlaylist(playlistId: number): Observable<any> {
+  const userId = this.authService.getCurrentUserUserId();
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.authService.getToken()}`
+  });
+  const model : DeletePlaylistDTO = {
+    playlistId: playlistId,
+    userId: userId || 0
+  };
+
+  return this.http.delete(`${this.apiUrl}/delete-playlist`, { headers, body: model });
+}
 }
