@@ -135,6 +135,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       if (response && response.url) {
         this.userProfile.profilePictureUrl = response.url;
         console.log('Image uploaded successfully:', response.url);
+        this.profileService.changeProfilePicture(response.url).subscribe(
+          () => {
+            console.log('Profile picture updated successfully');
+          },
+          (error) => {
+            console.error('Error updating profile picture:', error);
+          }
+        );
         this.closeImageUpload();
       } else {
         this.uploadError = 'Upload failed. Please try again.';

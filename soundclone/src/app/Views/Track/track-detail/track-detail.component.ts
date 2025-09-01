@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrackService, TrackDetail,Album } from '../../../Services/TrackService/track.service';
 import { ArtistService, ArtistDetailDTO } from '../../../Services/Artist/artist.service';
@@ -8,14 +8,16 @@ import { PlayerService, PlayerTrack } from '../../../Services/Player/player.serv
 import { LikeTrackInput, LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
 import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Services/Playlist/playlist.service';
 import { AuthService } from '../../../Services/auth.service';
+import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
+import { FooterComponent } from "../../common.component/footer/footer.component";
 @Component({
   selector: 'app-track-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, FooterComponent],
   templateUrl: './track-detail.component.html',
   styleUrl: './track-detail.component.scss'
 })
-export class TrackDetailComponent implements OnInit {
+export class TrackDetailComponent implements OnInit, OnDestroy {
 
   onAddToPlaylist() {
     this.playlistService.GetPlaylistMenu().subscribe({
@@ -26,6 +28,18 @@ export class TrackDetailComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching playlists:', error);
+      }
+    });
+  }
+
+  private refreshPlaylists() {
+    this.playlistService.GetPlaylistMenu().subscribe({
+      next: (playlists) => {
+        this.playlists = playlists;
+        console.log('Playlists refreshed after update');
+      },
+      error: (error) => {
+        console.error('Error refreshing playlists:', error);
       }
     });
   }
@@ -43,6 +57,7 @@ export class TrackDetailComponent implements OnInit {
         next: (isLiked: boolean) => {
           this.isLiked = !this.isLiked;
           console.log('Like track response:', isLiked);
+          this.updateLikeTrackCount(); // Cập nhật lại số lượng like sau khi thay đổi trạng thái like
         },
         error: (error: any) => {
           console.error('Error liking track:', error);
@@ -72,7 +87,8 @@ export class TrackDetailComponent implements OnInit {
      private playerService: PlayerService,
      private likeTrackService: LikeTrackService,
      private playlistService: PlaylistService,
-     private authService: AuthService
+     private authService: AuthService,
+     private playlistStateService: PlaylistStateService
    ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -96,6 +112,12 @@ export class TrackDetailComponent implements OnInit {
       next: (response) => {
         console.log('AddTrackToPlaylist success:', response);
         this.isPlaylistModalOpen = false;
+
+        // Thông báo playlist đã được cập nhật để các component khác biết
+        this.playlistStateService.notifyPlaylistUpdated(playlistId);
+
+        // Hiển thị thông báo thành công (tùy chọn)
+        console.log(`Track đã được thêm vào playlist thành công!`);
       },
       error: (error) => {
         console.error('AddTrackToPlaylist error:', error);
@@ -147,6 +169,14 @@ export class TrackDetailComponent implements OnInit {
         this.playerDuration = audio.duration;
       }
     }, 500);
+
+    // Subscribe to playlist updates
+    this.playlistStateService.playlistUpdated$.subscribe(playlistId => {
+      if (playlistId) {
+        console.log('Playlist updated, refreshing playlists in track detail...');
+        this.refreshPlaylists();
+      }
+    });
   }
 
   private updateLikeStatus() {
@@ -279,6 +309,12 @@ export class TrackDetailComponent implements OnInit {
     if (audio) {
       audio.currentTime = value;
       this.playerCurrentTime = value;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.playerSub) {
+      this.playerSub.unsubscribe();
     }
   }
 }

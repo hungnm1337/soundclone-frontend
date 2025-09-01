@@ -53,6 +53,12 @@ export interface DeletePlaylistDTO{
   userId: number;
 }
 
+export interface RemoveTrackFromPlaylistDTO{
+  playlistId: number;
+  trackId: number;
+  userId: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -142,5 +148,14 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
   };
 
   return this.http.delete(`${this.apiUrl}/delete-playlist`, { headers, body: model });
-}
+  }
+
+  RemoveTrackOfPlaylist(model: RemoveTrackFromPlaylistDTO): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.delete(`${this.apiUrl}/remove-track`, { headers, body: model });
+  }
 }

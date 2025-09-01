@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TrackService, Album } from '../../../Services/TrackService/track.service';
 import { Artist, ArtistService } from '../../../Services/Artist/artist.service';
 import { Router } from '@angular/router';
+import { FooterComponent } from "../footer/footer.component";
 
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [],
+  imports: [FooterComponent],
   templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit {

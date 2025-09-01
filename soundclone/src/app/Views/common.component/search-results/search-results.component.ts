@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ListDataService, ListPlaylistDTO, ListTrackDTO, ArtistDTO } from '../../../Services/ListData/list-data.service';
 import { ListTrackComponent } from "../list-track/list-track.component";
 import { ListPlaylistComponent } from "../list-playlist/list-playlist.component";
 import { ListArtistComponent } from "../list-artist/list-artist.component";
+import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
+import { Subscription } from 'rxjs';
+import { FooterComponent } from "../footer/footer.component";
 
 export type FilterType = 'all' | 'tracks' | 'playlists' | 'artists';
 
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, ListTrackComponent, ListPlaylistComponent, ListArtistComponent],
+  imports: [CommonModule, ListTrackComponent, ListPlaylistComponent, ListArtistComponent, FooterComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   searchResults: any[] = [];
   isLoading: boolean = false;
@@ -27,11 +30,13 @@ export class SearchResultsComponent implements OnInit {
   // Filter functionality
   activeFilter: FilterType = 'all';
   filterOptions: { value: FilterType; label: string; count: number }[] = [];
+  private subscription = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private listDataService: ListDataService
+    private listDataService: ListDataService,
+    private playlistStateService: PlaylistStateService
   ) {}
 
   ngOnInit() {
@@ -46,6 +51,16 @@ export class SearchResultsComponent implements OnInit {
         this.router.navigate(['/home']);
       }
     });
+
+    // Subscribe to playlist updates
+    this.subscription.add(
+      this.playlistStateService.playlistUpdated$.subscribe(playlistId => {
+        if (playlistId) {
+          console.log('Playlist updated, refreshing search results...');
+          this.refreshPlaylistSearch();
+        }
+      })
+    );
   }
 
   performSearch() {
@@ -107,5 +122,18 @@ export class SearchResultsComponent implements OnInit {
 
   newSearch() {
     this.router.navigate(['/home']);
+  }
+
+  private refreshPlaylistSearch() {
+    if (this.searchQuery) {
+      this.listDataService.GetPlaylistBySearch(this.searchQuery).subscribe(results => {
+        this.playlistResults = results;
+        this.updateFilterCounts();
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -47,17 +47,14 @@ export class ProfileServiceService {
     return this.http.get<UserProfile>(`${this.apiUrl}/user-information/${userId}`);
   }
 
-  public changeProfilePicture(file: File): void {
-    this.uploadService.uploadFile(file).pipe(
-      tap((response: UploadResponse) => {
+  public changeProfilePicture(fileURl: string): Observable<any> {
+
         const userId = this.authService.getCurrentUserUserId();
         const changeProfilePicture: ChangeProfilePicture = {
           userId: userId ?? 0,
-          profilePictureUrl: response.url
+          profilePictureUrl: fileURl
         };
         return this.http.put<ChangeProfilePicture>(`${this.apiUrl}/update-avatar`, changeProfilePicture);
-      })
-    );
   }
 
   public updateUserInformation(userInfo: UserInformation): Observable<boolean> {

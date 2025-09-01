@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListTrackComponent } from "../../common.component/list-track/list-track.component";
 import { ConfirmDialogComponent } from "../../common.component/confirm-dialog/confirm-dialog.component";
-import { PlaylistService, PlaylistDetailDTO, UpdatePlaylistDTO } from '../../../Services/Playlist/playlist.service';
+import { PlaylistService, PlaylistDetailDTO, UpdatePlaylistDTO, RemoveTrackFromPlaylistDTO } from '../../../Services/Playlist/playlist.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListTrackDTO } from '../../../Services/ListData/list-data.service';
 import { ListDataService } from '../../../Services/ListData/list-data.service';
@@ -11,14 +11,17 @@ import { AuthService } from '../../../Services/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UploadService } from '../../../Services/UploadFile/upload.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
+import { Subscription } from 'rxjs';
+import { FooterComponent } from "../../common.component/footer/footer.component";
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
-  imports: [ListTrackComponent, CommonModule, ReactiveFormsModule, ConfirmDialogComponent],
+  imports: [ListTrackComponent, CommonModule, ReactiveFormsModule, ConfirmDialogComponent, FooterComponent],
   templateUrl: './playlist-detail.component.html',
   styleUrl: './playlist-detail.component.scss'
 })
-export class PlaylistDetailComponent implements OnInit {
+export class PlaylistDetailComponent implements OnInit, OnDestroy {
+
 
   isLiked: boolean = false;
   playlistDetail: PlaylistDetailDTO | undefined;
@@ -35,8 +38,21 @@ export class PlaylistDetailComponent implements OnInit {
   playlistImagePreview: string | null = null;
   isEditingPlaylist: boolean = false;
   editPlaylistError: string | null = null;
+  private subscription = new Subscription();
+
   ngOnInit(): void {
     // Removed the premature like status check - it will be called after playlistId is set
+
+    // Subscribe to playlist updates
+    this.subscription.add(
+      this.playlistStateService.playlistUpdated$.subscribe(playlistId => {
+        if (playlistId && this.playlistId === playlistId) {
+          console.log('Playlist updated, refreshing data...');
+          this.loadPlaylistData();
+          this.loadTracksInPlaylist();
+        }
+      })
+    );
   }
 
   constructor(private playlistService: PlaylistService
@@ -78,6 +94,63 @@ export class PlaylistDetailComponent implements OnInit {
   isDeleteConfirmModalOpen: boolean = false;
   deleteConfirmMessage: string = '';
 
+    // Track management properties
+  isTrackListModalOpen: boolean = false;
+  isRemovingTrack: boolean = false;
+  removingTrackId: number | null = null;
+  showRemoveSuccessMessage: boolean = false;
+
+  openTrackListModal() {
+    this.isTrackListModalOpen = true;
+  }
+
+  closeTrackListModal() {
+    this.isTrackListModalOpen = false;
+    this.showRemoveSuccessMessage = false;
+  }
+
+  removeTrackFromPlaylist(trackId: number) {
+    if (!this.playlistId || !trackId) {
+      console.error('Missing playlistId or trackId');
+      return;
+    }
+
+    this.isRemovingTrack = true;
+    this.removingTrackId = trackId;
+
+    const removeModel: RemoveTrackFromPlaylistDTO = {
+      playlistId: this.playlistId,
+      trackId: trackId,
+      userId: this.authService.getCurrentUserUserId() || 0
+    };
+
+    this.playlistService.RemoveTrackOfPlaylist(removeModel).subscribe({
+      next: (response) => {
+        console.log('Track removed successfully:', response);
+
+        // Thông báo playlist đã được cập nhật
+        this.playlistStateService.notifyPlaylistUpdated(this.playlistId!);
+
+        // Refresh danh sách track và playlist data
+        this.loadTracksInPlaylist();
+        this.loadPlaylistData();
+
+        this.isRemovingTrack = false;
+        this.removingTrackId = null;
+
+        // Hiển thị thông báo thành công
+        this.showRemoveSuccessMessage = true;
+        setTimeout(() => {
+          this.showRemoveSuccessMessage = false;
+        }, 3000);
+      },
+      error: (error) => {
+        console.error('Error removing track:', error);
+        this.isRemovingTrack = false;
+        this.removingTrackId = null;
+      }
+    });
+  }
   deletePlaylist() {
     if (this.playlistId) {
       this.deleteConfirmMessage = `Are you sure you want to delete "${this.playlistDetail?.title}"? This action cannot be undone.`;
@@ -299,4 +372,15 @@ export class PlaylistDetailComponent implements OnInit {
     }
   }
 
+  private loadTracksInPlaylist() {
+    if (this.playlistId) {
+      this.listDataService.GetTracksByPlaylistId(this.playlistId).subscribe(tracks => {
+        this.trackInPlaylist = tracks;
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
