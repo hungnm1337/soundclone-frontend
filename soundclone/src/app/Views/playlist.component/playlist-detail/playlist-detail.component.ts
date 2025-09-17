@@ -13,6 +13,7 @@ import { UploadService } from '../../../Services/UploadFile/upload.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { Subscription } from 'rxjs';
 import { FooterComponent } from "../../common.component/footer/footer.component";
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
@@ -56,11 +57,13 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   }
 
   constructor(private playlistService: PlaylistService
+
     , private route: ActivatedRoute
     , private router: Router
     , private listDataService: ListDataService
     , private likePlaylistService: LikePlaylistService,
     private authService: AuthService,
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private uploadService: UploadService,
     private playlistStateService: PlaylistStateService
@@ -166,9 +169,11 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
             // Thông báo cho component khác biết playlist đã bị xóa
             this.playlistStateService.notifyPlaylistDeleted(this.playlistId!);
             this.router.navigate(['/home']);
+            this.toastr.success('Playlist deleted successfully!');
           }
         },
         error: (error) => {
+          this.toastr.error('Error deleting playlist.');  
           console.error('Error deleting playlist:', error);
         }
       });

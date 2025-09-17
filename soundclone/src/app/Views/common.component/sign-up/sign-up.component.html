@@ -1,17 +1,25 @@
 <app-header></app-header>
-
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="text-center">
-      <h2 class="text-3xl font-bold text-gray-900 font-sansita">Create Account</h2>
-      <p class="mt-2 text-sm text-gray-600">
-        Join SoundClone and start your musical journey
-      </p>
-    </div>
+<div class="min-h-screen w-full bg-[#fefcff] relative">
+  <div
+    class="absolute inset-0 z-0"
+    [ngStyle]="{
+      'background-image': 'radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%), radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%)'
+    }">
   </div>
 
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+  <div class="relative z-20 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 font-sansita">Create Account</h2>
+        <p class="mt-2 text-sm text-gray-600">
+          Join SoundClone and start your musical journey
+        </p>
+      </div>
+    </div>
+
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="space-y-6" (ngSubmit)="onSignUp()">
         <!-- Name -->
         <div>
@@ -255,3 +263,5 @@
     </div>
   </div>
 </div>
+
+

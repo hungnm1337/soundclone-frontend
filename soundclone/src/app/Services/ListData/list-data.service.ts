@@ -10,6 +10,7 @@ export interface ListTrackDTO {
 }
 export interface ListPlaylistDTO {
   playlistId: number;
+  numTrack: number;
   title: string;
   picturePlaylistUrl: string;
   artistName: string;

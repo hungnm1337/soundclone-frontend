@@ -4,6 +4,7 @@ import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } 
 import { TrackService, CreateTrackInput } from '../../../Services/TrackService/track.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-create-track',
   standalone: true,
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './create-track.component.html'
 })
 export class CreateTrackComponent implements OnInit {
-  constructor(private router: Router, private authService: AuthService, private trackService: TrackService) {}
+  constructor(private toastr: ToastrService, private router: Router, private authService: AuthService, private trackService: TrackService) {}
   private fb = inject(NonNullableFormBuilder);
   form = this.fb.group({
     title: ['', Validators.required],
@@ -121,6 +122,7 @@ export class CreateTrackComponent implements OnInit {
     this.trackService.createTrack(input).subscribe({
       next: (res) => {
         alert('Track created thành công!');
+        this.toastr.success('Track created successfully!');
         this.form.reset();
         this.audioFile.set(null);
         this.coverArt.set(null);
@@ -130,6 +132,7 @@ export class CreateTrackComponent implements OnInit {
       },
       error: () => {
         alert('Tạo track thất bại');
+        this.toastr.error('Failed to create track.');
         this.submitting.set(false);
       }
     });

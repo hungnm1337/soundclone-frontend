@@ -10,6 +10,7 @@ import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Serv
 import { AuthService } from '../../../Services/auth.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { FooterComponent } from "../../common.component/footer/footer.component";
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-track-detail',
   standalone: true,
@@ -81,6 +82,7 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   private playerSub?: any;
   public likeTrackCount: number = 0;
   constructor(private route: ActivatedRoute,
+     private toastr: ToastrService,
      private trackService: TrackService,
      private artistService: ArtistService,
      private router: Router,
@@ -117,9 +119,11 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
         this.playlistStateService.notifyPlaylistUpdated(playlistId);
 
         // Hiển thị thông báo thành công (tùy chọn)
+        this.toastr.success('Track added to playlist successfully!');
         console.log(`Track đã được thêm vào playlist thành công!`);
       },
       error: (error) => {
+        this.toastr.error('Error adding track to playlist.');
         console.error('AddTrackToPlaylist error:', error);
       }
     });

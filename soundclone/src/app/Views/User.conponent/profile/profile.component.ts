@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProfileServiceService, UserProfile, UserInformation } from '../../../Services/profile/profile-service.service';
 import { UploadService } from '../../../Services/UploadFile/upload.service';
 import { firstValueFrom, Subscription } from 'rxjs';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
+    private toastr: ToastrService,
     private profileService: ProfileServiceService,
     private uploadService: UploadService
   ) {}
@@ -47,6 +48,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.userProfile = profile;
         console.log('User Profile:', this.userProfile);
       },
+
       (error) => {
         console.error('Error fetching user profile:', error);
       }
@@ -138,9 +140,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.profileService.changeProfilePicture(response.url).subscribe(
           () => {
             console.log('Profile picture updated successfully');
+            this.toastr.success('Profile picture updated successfully!');
           },
           (error) => {
             console.error('Error updating profile picture:', error);
+            this.toastr.error('Failed to update profile picture.');
           }
         );
         this.closeImageUpload();
@@ -235,8 +239,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
           (profile) => {
             this.userProfile = profile;
             this.closeUserInfoEditPopup();
+            this.toastr.success('User information updated successfully!');
           },
           (error) => {
+            this.toastr.error('Failed to reload user profile.');
             console.error('Error reloading profile:', error);
             this.userInfoEditError = 'Failed to reload user profile.';
             this.closeUserInfoEditPopup();

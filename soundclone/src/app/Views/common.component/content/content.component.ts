@@ -3,12 +3,13 @@ import { TrackService, Album } from '../../../Services/TrackService/track.servic
 import { Artist, ArtistService } from '../../../Services/Artist/artist.service';
 import { Router } from '@angular/router';
 import { FooterComponent } from "../footer/footer.component";
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [FooterComponent],
+  imports: [FooterComponent, CommonModule],
   templateUrl: './content.component.html'
 })
 export class ContentComponent implements OnInit {

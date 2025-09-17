@@ -6,6 +6,7 @@ import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.
 import { AuthService } from '../../../Services/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-menu',
   standalone: true,
@@ -30,7 +31,8 @@ export class MenuComponent implements OnInit {
     private playlistService: PlaylistService,
     private authService: AuthService,
     private fb: FormBuilder, // Thêm FormBuilder
-    private playlistStateService: PlaylistStateService
+    private playlistStateService: PlaylistStateService,
+    private toastr: ToastrService
   ) {
     this.createPlaylistForm = this.fb.group({
       title: ['', Validators.required],
@@ -152,6 +154,7 @@ export class MenuComponent implements OnInit {
         this.playlistService.GetPlaylistMenu().subscribe(data => {
           this.playlists = data;
         });
+        this.toastr.success('Create playlist successfully!');
       },
       error: (err) => {
         this.isCreatingPlaylist = false;
