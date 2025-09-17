@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlaylistComponent } from './playlist.component';
+import { SystemReportComponent } from './system-report.component';
 
-describe('PlaylistComponent', () => {
-  let component: PlaylistComponent;
-  let fixture: ComponentFixture<PlaylistComponent>;
+describe('SystemReportComponent', () => {
+  let component: SystemReportComponent;
+  let fixture: ComponentFixture<SystemReportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlaylistComponent]
+      imports: [SystemReportComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PlaylistComponent);
+    fixture = TestBed.createComponent(SystemReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

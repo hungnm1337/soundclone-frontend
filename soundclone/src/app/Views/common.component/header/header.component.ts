@@ -21,6 +21,9 @@ interface Notification {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+sendReportProblem() {
+throw new Error('Method not implemented.');
+}
 
 GoServices() {
   this.router.navigate(['home/services']);

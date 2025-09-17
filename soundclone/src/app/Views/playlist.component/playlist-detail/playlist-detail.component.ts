@@ -173,7 +173,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          this.toastr.error('Error deleting playlist.');  
+          this.toastr.error('Error deleting playlist.');
           console.error('Error deleting playlist:', error);
         }
       });

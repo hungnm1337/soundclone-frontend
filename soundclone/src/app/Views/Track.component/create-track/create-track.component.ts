@@ -5,10 +5,11 @@ import { TrackService, CreateTrackInput } from '../../../Services/TrackService/t
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MenuComponent } from "../../common.component/menu/menu.component";
 @Component({
   selector: 'app-create-track',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MenuComponent],
   templateUrl: './create-track.component.html'
 })
 export class CreateTrackComponent implements OnInit {

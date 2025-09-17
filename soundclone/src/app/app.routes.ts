@@ -3,16 +3,16 @@ import { HomepageComponent } from './Views/common.component/homepage/homepage.co
 import { ErrorComponent } from './Views/common.component/error/error.component';
 import { SignInComponent } from './Views/common.component/sign-in/sign-in.component';
 import { SignUpComponent } from './Views/common.component/sign-up/sign-up.component';
-import { CreateTrackComponent } from './Views/Track/create-track/create-track.component';
+import { CreateTrackComponent } from './Views/Track.component/create-track/create-track.component';
 import { ContentComponent } from './Views/common.component/content/content.component';
 import { ServicesComponent } from './Views/common.component/services/services.component';
-import { TrackDetailComponent } from './Views/Track/track-detail/track-detail.component';
+import { TrackDetailComponent } from './Views/Track.component/track-detail/track-detail.component';
 import { ProfileComponent } from './Views/User.conponent/profile/profile.component';
 import { LikedComponent } from './Views/common.component/liked/liked.component';
-import { PlaylistDetailComponent } from './Views/playlist.component/playlist-detail/playlist-detail.component';
 import { SearchResultsComponent } from './Views/common.component/search-results/search-results.component';
 import { ArtistProfileComponent } from './Views/User.conponent/artist-profile/artist-profile.component';
-
+import { PlaylistDetailComponent } from './Views/Playlist.component/playlist-detail/playlist-detail.component';
+import { SystemReportComponent } from './Views/User.conponent/system-report/system-report.component';
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
@@ -23,6 +23,7 @@ export const routes: Routes = [
       {path: 'services', component: ServicesComponent},
       {path: 'result', component: SearchResultsComponent},
       {path: 'liked', component: LikedComponent},
+      {path: 'system-report', component: SystemReportComponent},
       {path: 'playlist/:id', component: PlaylistDetailComponent},
       {path: '', component: ContentComponent },
     ]
