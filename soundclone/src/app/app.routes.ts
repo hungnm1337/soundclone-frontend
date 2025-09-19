@@ -13,6 +13,7 @@ import { SearchResultsComponent } from './Views/common.component/search-results/
 import { ArtistProfileComponent } from './Views/User.conponent/artist-profile/artist-profile.component';
 import { PlaylistDetailComponent } from './Views/Playlist.component/playlist-detail/playlist-detail.component';
 import { SystemReportComponent } from './Views/User.conponent/system-report/system-report.component';
+import { DashboardComponent } from './Views/Admin.component/dashboard/dashboard.component';
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
@@ -30,6 +31,7 @@ export const routes: Routes = [
   },
   {path: 'login', component: SignInComponent},
   {path: 'register', component: SignUpComponent},
+  {path: 'dashboard', component:DashboardComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: ErrorComponent},
 

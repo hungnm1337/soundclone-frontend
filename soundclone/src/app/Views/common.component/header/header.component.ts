@@ -21,8 +21,12 @@ interface Notification {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+changeToAdminDashboard() {
+  this.router.navigate(['dashboard']);
+}
+isAdmin: boolean = false;
 sendReportProblem() {
-throw new Error('Method not implemented.');
+  this.router.navigate(['home/system-report']);
 }
 
 GoServices() {
@@ -95,7 +99,9 @@ showProfile() {
 
   ngOnInit() {
     this.checkLoginStatus();
-
+    if(this.authService.getCurrentUserRoleId()==6){
+      this.isAdmin = true
+    }
     // Subscribe to login state changes
     this.loginSubscription = this.authService.loginState$.subscribe(() => {
       this.checkLoginStatus();

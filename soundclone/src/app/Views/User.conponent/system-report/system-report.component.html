@@ -1,1 +1,176 @@
-<p>system-report works!</p>
+<div class="p-5 max-w-7xl mx-auto min-h-screen bg-gray-50">
+  <!-- Header with Create Report Button -->
+  <div class="flex justify-between items-center mb-8 p-5 bg-white rounded-xl shadow-sm">
+    <h1 class="text-3xl font-bold text-gray-800">System Reports</h1>
+    <button
+      class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+      (click)="openCreateModal()"
+      [disabled]="isLoading">
+      <i class="fas fa-plus text-base"></i>
+      Create Report
+    </button>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 min-h-[600px]">
+    <!-- Left Side - User Reports List -->
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-800 mb-5 pb-3 border-b-2 border-gray-200">Reports List</h2>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-10 text-gray-500">
+        <div class="w-8 h-8 border-3 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+        <p>Loading...</p>
+      </div>
+
+      <!-- Reports List -->
+      <div *ngIf="!isLoading" class="max-h-[500px] overflow-y-auto">
+        <div
+          *ngFor="let report of userReports; trackBy: trackByReportId"
+          class="p-4 border border-gray-200 rounded-lg mb-3 cursor-pointer transition-all duration-200 bg-gray-50 hover:border-blue-500 hover:bg-blue-50 hover:-translate-y-0.5 hover:shadow-md"
+          [class.border-blue-500]="selectedReportId === report.systemReportId"
+          [class.bg-blue-50]="selectedReportId === report.systemReportId"
+          [class.shadow-md]="selectedReportId === report.systemReportId"
+          (click)="viewReportDetails(report.systemReportId)">
+
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold text-gray-600 text-sm">#{{ report.systemReportId }}</span>
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold uppercase"
+              [class.bg-green-100]="report.isReplied"
+              [class.text-green-800]="report.isReplied"
+              [class.bg-yellow-100]="!report.isReplied"
+              [class.text-yellow-800]="!report.isReplied">
+              {{ getStatusText(report.isReplied) }}
+            </span>
+          </div>
+
+          <div class="text-gray-600 text-sm leading-relaxed">
+            <p class="overflow-hidden" style="display: -webkit-box; -webkit-box-orient: vertical;">{{ report.content }}</p>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="userReports.length === 0" class="text-center py-10 text-gray-500">
+          <i class="fas fa-inbox text-5xl mb-4 text-gray-300"></i>
+          <p class="text-base mb-5">No reports yet</p>
+          <button
+            class="px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 hover:-translate-y-0.5 transition-all duration-200"
+            (click)="openCreateModal()">
+            Create your first report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Detailed Report View -->
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-800 mb-5 pb-3 border-b-2 border-gray-200">Report Details</h2>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading && selectedReportId" class="text-center py-10 text-gray-500">
+        <div class="w-8 h-8 border-3 border-gray-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+        <p>Loading details...</p>
+      </div>
+
+      <!-- Detailed Report Content -->
+      <div *ngIf="!isLoading && detailedReport" class="space-y-6">
+        <div class="bg-gray-50 p-5 rounded-lg">
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-semibold text-gray-700">Report ID:</span>
+            <span class="text-gray-600">#{{ detailedReport.systemReportId }}</span>
+          </div>
+
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-semibold text-gray-700">Created Date:</span>
+            <span class="text-gray-600">{{ formatDate(detailedReport.reportDate) }}</span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="font-semibold text-gray-700">Status:</span>
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold uppercase"
+              [class.bg-green-100]="!!(detailedReport.replyContent && detailedReport.replyContent.length > 0)"
+              [class.text-green-800]="!!(detailedReport.replyContent && detailedReport.replyContent.length > 0)"
+              [class.bg-yellow-100]="!(detailedReport.replyContent && detailedReport.replyContent.length > 0)"
+              [class.text-yellow-800]="!(detailedReport.replyContent && detailedReport.replyContent.length > 0)">
+              {{ detailedReport.replyContent && detailedReport.replyContent.length > 0 ? 'Replied' : 'Pending' }}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-base font-semibold text-gray-800 mb-3">Report Content:</h3>
+          <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <p class="text-gray-700 leading-relaxed">{{ detailedReport.content }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="detailedReport.replyContent && detailedReport.replyContent.length > 0">
+          <h3 class="text-base font-semibold text-gray-800 mb-3">System Reply:</h3>
+          <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-green-500">
+            <p class="text-gray-700 leading-relaxed">{{ detailedReport.replyContent }}</p>
+            <div class="mt-3 text-xs text-gray-500 flex items-center gap-1">
+              <i class="fas fa-clock text-xs"></i>
+              {{ formatDate(detailedReport.replyDate) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Selection State -->
+      <div *ngIf="!selectedReportId && !isLoading" class="text-center py-16 text-gray-500">
+        <i class="fas fa-mouse-pointer text-5xl mb-4 text-gray-300"></i>
+        <p class="text-base">Select a report to view details</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Report Modal -->
+  <div *ngIf="showCreateModal"
+       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-5"
+       (click)="closeCreateModal()">
+    <div class="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl"
+         (click)="$event.stopPropagation()">
+      <div class="flex justify-between items-center p-6 border-b border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-800">Create New Report</h3>
+        <button
+          class="text-gray-500 hover:bg-gray-100 p-1 rounded transition-colors duration-200"
+          (click)="closeCreateModal()">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <div class="p-6">
+        <div class="mb-5">
+          <label for="reportContent" class="block font-semibold text-gray-700 mb-2">Report Content:</label>
+          <textarea
+            id="reportContent"
+            [(ngModel)]="newReportContent"
+            placeholder="Describe the issue you encountered in detail..."
+            rows="6"
+            maxlength="1000"
+            class="w-full p-3 border border-gray-300 rounded-lg text-sm resize-y min-h-[120px] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors duration-200">
+          </textarea>
+          <div class="text-right text-xs text-gray-500 mt-1">{{ newReportContent.length }}/1000</div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+        <button
+          class="px-5 py-2.5 bg-gray-100 text-gray-600 rounded-lg font-semibold hover:bg-gray-200 transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          (click)="closeCreateModal()"
+          [disabled]="isLoading">
+          Cancel
+        </button>
+        <button
+          class="px-5 py-2.5 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
+          (click)="createReport()"
+          [disabled]="isLoading || !newReportContent.trim()">
+          <span *ngIf="isLoading" class="w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin"></span>
+          {{ isLoading ? 'Creating...' : 'Create Report' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
