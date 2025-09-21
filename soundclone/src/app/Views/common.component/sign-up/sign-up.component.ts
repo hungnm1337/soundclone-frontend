@@ -87,6 +87,27 @@ export class SignUpComponent {
     if (!this.dayOfBirth) {
       this.dayOfBirthError = 'Date of birth is required';
       isValid = false;
+    } else {
+      const today = new Date();
+      const birthDate = new Date(this.dayOfBirth);
+
+      // Reset time to compare only dates
+      today.setHours(0, 0, 0, 0);
+      birthDate.setHours(0, 0, 0, 0);
+
+      if (birthDate >= today) {
+        this.dayOfBirthError = 'Date of birth must be before today';
+        isValid = false;
+      } else {
+        // Check if age is reasonable (not more than 150 years old)
+        const age = today.getFullYear() - birthDate.getFullYear();
+        if (age > 150) {
+          this.dayOfBirthError = 'Please enter a valid date of birth';
+          isValid = false;
+        } else {
+          this.dayOfBirthError = '';
+        }
+      }
     }
 
     // Validate phone number

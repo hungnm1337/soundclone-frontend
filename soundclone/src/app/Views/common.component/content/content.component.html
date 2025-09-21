@@ -27,6 +27,32 @@
         </div>
       }
     </div>
+
+    <!-- Top Albums Section -->
+     <div class="mb-8 mt-10">
+      <h1 class="text-xl font-bold text-gray-900 mb-2">Top Albums</h1>
+      <p class="text-gray-600 m-3">Check out the most popular albums right now</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
+      @for (album of topAlbums; track album.id) {
+        <div (click)="OpenTrack(album.id)" class="bg-white cursor-pointer rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                  <div class="aspect-square overflow-hidden">
+          <img
+            [src]="album.imageUrl"
+            [alt]="album.title"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          >
+        </div>
+        <div class="p-3">
+          <h3 class="font-semibold text-gray-900 text-sm mb-1 truncate">{{ album.title }}</h3>
+          <p class="text-gray-600 text-xs mb-2 truncate">{{ album.artist }}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-500">{{ album.year }}</span>
+            <span class="text-xs text-gray-500">{{ album.view }} views</span>
+          </div>
+        </div>
+        </div>
+      }
+    </div>
     <!-- Artists Section -->
      <div class="mb-8 mt-3">
       <h1 class="text-xl font-bold text-gray-900 mb-2">Discover Artists</h1>

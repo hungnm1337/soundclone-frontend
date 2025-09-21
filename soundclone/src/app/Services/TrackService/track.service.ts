@@ -100,6 +100,16 @@ constructor(private http: HttpClient, private uploadService: UploadService, priv
   return this.http.get<Album[]>(this.apiUrl + '/albums', { headers });
 }
 
+ public GetTopAlbum(): Observable<Album[]> {
+  const token = this.authService.getToken();
+  let headers = new HttpHeaders();
+  if (token) {
+    headers = headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  return this.http.get<Album[]>(this.apiUrl + '/top-albums', { headers });
+}
+
 public GetAlbumByArtist(artistId: number): Observable<Album[]> {
   const token = this.authService.getToken();
   let headers = new HttpHeaders();

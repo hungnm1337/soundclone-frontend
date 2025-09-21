@@ -19,6 +19,7 @@ export class ContentComponent implements OnInit {
 
   constructor(private trackService: TrackService, private artistService: ArtistService, private router: Router) { }
   albums: Album[] = [];
+  topAlbums: Album[] = [];
   artists: Artist[] = [];
   ngOnInit() {
     this.trackService.GetAlbum().subscribe({
@@ -29,7 +30,14 @@ export class ContentComponent implements OnInit {
         console.error('Error fetching albums:', error);
       }
     });
-
+    this.trackService.GetTopAlbum().subscribe({
+      next: (data) => {
+        this.topAlbums = data;
+      },
+      error: (error) => {
+        console.error('Error fetching top albums:', error);
+      }
+    });
     this.artistService.GetTop5Artists().subscribe({
       next: (data) => {
         this.artists = data;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-menu-dashboard',
   standalone: true,
@@ -8,17 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './menu-dashboard.component.scss'
 })
 export class MenuDashboardComponent {
+constructor(private router: Router) { }
 systemAnalysis() {
-throw new Error('Method not implemented.');
-}
+this.router.navigate(['/dashboard/analysist']);}
 serviceManage() {
-throw new Error('Method not implemented.');
-}
+this.router.navigate(['/dashboard/services']);}
 reportManage() {
-throw new Error('Method not implemented.');
-}
+this.router.navigate(['/dashboard/reports']);}
 accountManage() {
-throw new Error('Method not implemented.');
-}
+this.router.navigate(['/dashboard/accounts']);}
 
 }

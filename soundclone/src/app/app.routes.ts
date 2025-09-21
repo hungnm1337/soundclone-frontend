@@ -14,6 +14,9 @@ import { ArtistProfileComponent } from './Views/User.conponent/artist-profile/ar
 import { PlaylistDetailComponent } from './Views/Playlist.component/playlist-detail/playlist-detail.component';
 import { SystemReportComponent } from './Views/User.conponent/system-report/system-report.component';
 import { DashboardComponent } from './Views/Admin.component/dashboard/dashboard.component';
+import { SystemAnalysisComponent } from './Views/Admin.component/system-analysis/system-analysis.component';
+import { AccountManageComponent } from './Views/Admin.component/account-manage/account-manage.component';
+import { ReportManageComponent } from './Views/Admin.component/report-manage/report-manage.component';
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
@@ -29,9 +32,19 @@ export const routes: Routes = [
       {path: '', component: ContentComponent },
     ]
   },
+  {path: 'dashboard', component:DashboardComponent
+    ,children: [
+      {path: 'analysist', component: SystemAnalysisComponent},
+      {path: 'accounts', component: AccountManageComponent},
+      {path: 'reports', component: ReportManageComponent},
+      {path: 'services', component: ServicesComponent},
+      {path: '', component: SystemAnalysisComponent },
+      {path: '**', component: ErrorComponent},
+
+    ]
+  },
   {path: 'login', component: SignInComponent},
   {path: 'register', component: SignUpComponent},
-  {path: 'dashboard', component:DashboardComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: ErrorComponent},
 
