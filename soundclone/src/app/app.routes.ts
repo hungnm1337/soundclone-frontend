@@ -17,6 +17,7 @@ import { DashboardComponent } from './Views/Admin.component/dashboard/dashboard.
 import { SystemAnalysisComponent } from './Views/Admin.component/system-analysis/system-analysis.component';
 import { AccountManageComponent } from './Views/Admin.component/account-manage/account-manage.component';
 import { ReportManageComponent } from './Views/Admin.component/report-manage/report-manage.component';
+import { NotificationManageComponent } from './Views/Admin.component/notification-manage/notification-manage.component';
 export const routes: Routes = [
   {path: 'home', component: HomepageComponent
     ,children: [
@@ -38,6 +39,7 @@ export const routes: Routes = [
       {path: 'accounts', component: AccountManageComponent},
       {path: 'reports', component: ReportManageComponent},
       {path: 'services', component: ServicesComponent},
+      {path: 'notifications', component: NotificationManageComponent},
       {path: '', component: SystemAnalysisComponent },
       {path: '**', component: ErrorComponent},
 

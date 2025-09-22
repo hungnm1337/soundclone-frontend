@@ -34,9 +34,8 @@ export class SystemAnalysisComponent implements OnInit {
     showLegend: false,
     showXAxisLabel: true,
     showYAxisLabel: true,
-    xAxisLabel: 'Tháng',
-    yAxisLabel: 'Số lượng',
-    timeline: false,
+    xAxisLabel: 'Month',
+    yAxisLabel: 'Count',
     colorScheme: {
       domain: ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6']
     }
@@ -49,9 +48,8 @@ export class SystemAnalysisComponent implements OnInit {
     showLegend: false,
     showXAxisLabel: true,
     showYAxisLabel: true,
-    xAxisLabel: 'Tháng',
-    yAxisLabel: 'Doanh thu (VND)',
-    timeline: false,
+    xAxisLabel: 'Month',
+    yAxisLabel: 'Revenue (VND)',
     colorScheme: {
       domain: ['#F59E0B']
     }
@@ -83,7 +81,7 @@ export class SystemAnalysisComponent implements OnInit {
       this.transformChartData();
       this.loading = false;
     }).catch(error => {
-      this.error = 'Không thể tải dữ liệu phân tích';
+      this.error = 'Unable to load analysis data';
       this.loading = false;
       console.error('Error loading analysis data:', error);
     });

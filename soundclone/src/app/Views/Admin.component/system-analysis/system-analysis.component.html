@@ -1,8 +1,8 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <!-- Header -->
   <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Phân Tích Hệ Thống</h1>
-    <p class="text-gray-600">Tổng quan dữ liệu và thống kê hệ thống</p>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">System Analysis</h1>
+    <p class="text-gray-600">System data overview and statistics</p>
   </div>
 
   <!-- Loading State -->
@@ -19,7 +19,7 @@
         </svg>
       </div>
       <div class="ml-3">
-        <h3 class="text-sm font-medium text-red-800">Lỗi tải dữ liệu</h3>
+        <h3 class="text-sm font-medium text-red-800">Data Loading Error</h3>
         <p class="text-sm text-red-700 mt-1">{{ error }}</p>
       </div>
     </div>
@@ -31,57 +31,57 @@
     <!-- Total Users Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
-        <div class="p-3 bg-blue-100 rounded-lg">
-          <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
           </svg>
         </div>
-        <span class="text-2xl font-bold text-gray-900">{{ getTotalUsers() }}</span>
+        <span class="text-2xl font-bold text-gray-900">{{ getTotalUsers() || 0 }}</span>
       </div>
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Tổng Người Dùng</h3>
-      <p class="text-sm text-gray-600">Đăng ký mới theo tháng</p>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Users</h3>
+      <p class="text-sm text-gray-600">New registrations per month</p>
     </div>
 
     <!-- Total Tracks Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
-        <div class="p-3 bg-green-100 rounded-lg">
-          <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
           </svg>
         </div>
-        <span class="text-2xl font-bold text-gray-900">{{ getTotalTracks() }}</span>
+        <span class="text-2xl font-bold text-gray-900">{{ getTotalTracks() || 0 }}</span>
       </div>
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Tổng Bài Hát</h3>
-      <p class="text-sm text-gray-600">Upload theo tháng</p>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Tracks</h3>
+      <p class="text-sm text-gray-600">Uploads per month</p>
     </div>
 
     <!-- Total Revenue Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
-        <div class="p-3 bg-yellow-100 rounded-lg">
-          <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
           </svg>
         </div>
-        <span class="text-2xl font-bold text-gray-900">{{ formatCurrency(getTotalRevenue()) }}</span>
+        <span class="text-2xl font-bold text-gray-900">{{ formatCurrency(getTotalRevenue() || 0) }}</span>
       </div>
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Tổng Doanh Thu</h3>
-      <p class="text-sm text-gray-600">Theo tháng</p>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Revenue</h3>
+      <p class="text-sm text-gray-600">Per month</p>
     </div>
 
     <!-- Total Invoices Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
-        <div class="p-3 bg-purple-100 rounded-lg">
-          <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <span class="text-2xl font-bold text-gray-900">{{ getTotalInvoices() }}</span>
+        <span class="text-2xl font-bold text-gray-900">{{ getTotalInvoices() || 0 }}</span>
       </div>
-      <h3 class="text-lg font-semibold text-gray-900 mb-2">Tổng Hóa Đơn</h3>
-      <p class="text-sm text-gray-600">Theo tháng</p>
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Invoices</h3>
+      <p class="text-sm text-gray-600">Per month</p>
     </div>
   </div>
 
@@ -91,26 +91,25 @@
     <!-- User Registration Chart -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-semibold text-gray-900">Đăng Ký Người Dùng</h3>
+        <h3 class="text-xl font-semibold text-gray-900">User Registration</h3>
         <div class="flex items-center space-x-2">
           <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-          <span class="text-sm text-gray-600">Người dùng mới</span>
+          <span class="text-sm text-gray-600">New users</span>
         </div>
       </div>
 
       <div class="h-80">
         <ngx-charts-bar-vertical
-          [results]="userRegistrationChartData"
-          [scheme]="chartOptions.colorScheme"
-          [showXAxis]="chartOptions.showXAxis"
-          [showYAxis]="chartOptions.showYAxis"
+          [results]="userRegistrationChartData || []"
+          [scheme]="'vivid'"
+          [xAxis]="chartOptions.showXAxis"
+          [yAxis]="chartOptions.showYAxis"
           [showXAxisLabel]="chartOptions.showXAxisLabel"
           [showYAxisLabel]="chartOptions.showYAxisLabel"
           [xAxisLabel]="chartOptions.xAxisLabel"
           [yAxisLabel]="chartOptions.yAxisLabel"
           [gradient]="chartOptions.gradient"
-          [showLegend]="chartOptions.showLegend"
-          [timeline]="chartOptions.timeline">
+          [legend]="chartOptions.showLegend">
         </ngx-charts-bar-vertical>
       </div>
     </div>
@@ -118,26 +117,25 @@
     <!-- Track Upload Chart -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-semibold text-gray-900">Upload Bài Hát</h3>
+        <h3 class="text-xl font-semibold text-gray-900">Track Upload</h3>
         <div class="flex items-center space-x-2">
           <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-          <span class="text-sm text-gray-600">Bài hát mới</span>
+          <span class="text-sm text-gray-600">New tracks</span>
         </div>
       </div>
 
       <div class="h-80">
         <ngx-charts-bar-vertical
-          [results]="trackUploadChartData"
-          [scheme]="chartOptions.colorScheme"
-          [showXAxis]="chartOptions.showXAxis"
-          [showYAxis]="chartOptions.showYAxis"
+          [results]="trackUploadChartData || []"
+          [scheme]="'vivid'"
+          [xAxis]="chartOptions.showXAxis"
+          [yAxis]="chartOptions.showYAxis"
           [showXAxisLabel]="chartOptions.showXAxisLabel"
           [showYAxisLabel]="chartOptions.showYAxisLabel"
           [xAxisLabel]="chartOptions.xAxisLabel"
           [yAxisLabel]="chartOptions.yAxisLabel"
           [gradient]="chartOptions.gradient"
-          [showLegend]="chartOptions.showLegend"
-          [timeline]="chartOptions.timeline">
+          [legend]="chartOptions.showLegend">
         </ngx-charts-bar-vertical>
       </div>
     </div>
@@ -145,7 +143,7 @@
     <!-- Revenue Chart -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-semibold text-gray-900">Doanh Thu</h3>
+        <h3 class="text-xl font-semibold text-gray-900">Revenue</h3>
         <div class="flex items-center space-x-2">
           <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
           <span class="text-sm text-gray-600">VND</span>
@@ -154,17 +152,16 @@
 
       <div class="h-80">
         <ngx-charts-bar-vertical
-          [results]="revenueChartData"
-          [scheme]="revenueChartOptions.colorScheme"
-          [showXAxis]="revenueChartOptions.showXAxis"
-          [showYAxis]="revenueChartOptions.showYAxis"
+          [results]="revenueChartData || []"
+          [scheme]="'vivid'"
+          [xAxis]="revenueChartOptions.showXAxis"
+          [yAxis]="revenueChartOptions.showYAxis"
           [showXAxisLabel]="revenueChartOptions.showXAxisLabel"
           [showYAxisLabel]="revenueChartOptions.showYAxisLabel"
           [xAxisLabel]="revenueChartOptions.xAxisLabel"
           [yAxisLabel]="revenueChartOptions.yAxisLabel"
           [gradient]="revenueChartOptions.gradient"
-          [showLegend]="revenueChartOptions.showLegend"
-          [timeline]="revenueChartOptions.timeline">
+          [legend]="revenueChartOptions.showLegend">
         </ngx-charts-bar-vertical>
       </div>
     </div>
@@ -172,38 +169,37 @@
     <!-- Invoice Count Chart -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-semibold text-gray-900">Số Lượng Hóa Đơn</h3>
+        <h3 class="text-xl font-semibold text-gray-900">Invoice Count</h3>
         <div class="flex items-center space-x-2">
           <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
-          <span class="text-sm text-gray-600">Hóa đơn</span>
+          <span class="text-sm text-gray-600">Invoices</span>
         </div>
       </div>
 
       <div class="h-80">
         <ngx-charts-bar-vertical
-          [results]="invoiceCountChartData"
-          [scheme]="chartOptions.colorScheme"
-          [showXAxis]="chartOptions.showXAxis"
-          [showYAxis]="chartOptions.showYAxis"
+          [results]="invoiceCountChartData || []"
+          [scheme]="'vivid'"
+          [xAxis]="chartOptions.showXAxis"
+          [yAxis]="chartOptions.showYAxis"
           [showXAxisLabel]="chartOptions.showXAxisLabel"
           [showYAxisLabel]="chartOptions.showYAxisLabel"
           [xAxisLabel]="chartOptions.xAxisLabel"
           [yAxisLabel]="chartOptions.yAxisLabel"
           [gradient]="chartOptions.gradient"
-          [showLegend]="chartOptions.showLegend"
-          [timeline]="chartOptions.timeline">
+          [legend]="chartOptions.showLegend">
         </ngx-charts-bar-vertical>
       </div>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="!loading && !error && GetUserRegistrationCountByMonth.length === 0"
+  <div *ngIf="!loading && !error && GetUserRegistrationCountByMonth.length === 0 && GetTrackUploadCountByMonth.length === 0 && GetTotalInvoiceAmountByMonth.length === 0 && GetInvoiceCountByMonth.length === 0"
        class="text-center py-12">
     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
     </svg>
-    <h3 class="mt-2 text-sm font-medium text-gray-900">Không có dữ liệu</h3>
-    <p class="mt-1 text-sm text-gray-500">Chưa có dữ liệu phân tích để hiển thị.</p>
+    <h3 class="mt-2 text-sm font-medium text-gray-900">No Data Available</h3>
+    <p class="mt-1 text-sm text-gray-500">No analysis data available to display.</p>
   </div>
 </div>

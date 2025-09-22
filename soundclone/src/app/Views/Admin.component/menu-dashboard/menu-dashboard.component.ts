@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrl: './menu-dashboard.component.scss'
 })
 export class MenuDashboardComponent {
+
 constructor(private router: Router) { }
 systemAnalysis() {
 this.router.navigate(['/dashboard/analysist']);}
@@ -17,5 +18,6 @@ reportManage() {
 this.router.navigate(['/dashboard/reports']);}
 accountManage() {
 this.router.navigate(['/dashboard/accounts']);}
-
+notificationManage() {
+this.router.navigate(['/dashboard/notifications']);}
 }
