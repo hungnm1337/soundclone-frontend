@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TrackService, TrackDetail,Album } from '../../../Services/TrackService/track.service';
 import { ArtistService, ArtistDetailDTO } from '../../../Services/Artist/artist.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlayerService, PlayerTrack } from '../../../Services/Player/player.service';
 import { LikeTrackInput, LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
@@ -11,10 +12,12 @@ import { AuthService } from '../../../Services/auth.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { FooterComponent } from "../../common.component/footer/footer.component";
 import { ToastrService } from 'ngx-toastr';
+import { CommentDTO, CommentService } from '../../../Services/Comment/comment.service';
+
 @Component({
   selector: 'app-track-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe, FooterComponent],
+  imports: [CommonModule, DatePipe, FooterComponent, FormsModule],
   templateUrl: './track-detail.component.html',
   styleUrl: './track-detail.component.scss'
 })
@@ -46,7 +49,6 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   }
 
   onLikeTrack() {
-    // Kiểm tra đăng nhập trước khi cho phép like
     if (!this.authService.isLoggedIn()) {
       console.log('User not logged in, redirecting to login');
       this.router.navigate(['/login']);
@@ -58,7 +60,7 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
         next: (isLiked: boolean) => {
           this.isLiked = !this.isLiked;
           console.log('Like track response:', isLiked);
-          this.updateLikeTrackCount(); // Cập nhật lại số lượng like sau khi thay đổi trạng thái like
+          this.updateLikeTrackCount();
         },
         error: (error: any) => {
           console.error('Error liking track:', error);
@@ -81,7 +83,14 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   public playerIsPlaying: boolean = false;
   private playerSub?: any;
   public likeTrackCount: number = 0;
+  public comments: CommentDTO[] = [];
+  public newCommentContent: string = '';
+  public currentDisplayComment: CommentDTO | null = null;
+  public currentCommentIndex: number = 0;
+  private commentDisplayInterval: any;
+
   constructor(private route: ActivatedRoute,
+     private commentService: CommentService,
      private toastr: ToastrService,
      private trackService: TrackService,
      private artistService: ArtistService,
@@ -114,11 +123,7 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
       next: (response) => {
         console.log('AddTrackToPlaylist success:', response);
         this.isPlaylistModalOpen = false;
-
-        // Thông báo playlist đã được cập nhật để các component khác biết
         this.playlistStateService.notifyPlaylistUpdated(playlistId);
-
-        // Hiển thị thông báo thành công (tùy chọn)
         this.toastr.success('Track added to playlist successfully!');
         console.log(`Track đã được thêm vào playlist thành công!`);
       },
@@ -130,10 +135,13 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.isPlaying = true;
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.trackId = id ? +id : null;
+
       this.loadTrackData();
+      this.loadComments(this.trackId);
     });
     this.playlistService.GetPlaylistMenu().subscribe({
       next: (playlists) => {
@@ -146,7 +154,6 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
     });
          // Cập nhật like count (luôn gọi dù có đăng nhập hay không)
      this.updateLikeTrackCount();
-
      // Chỉ cập nhật like status khi user đã đăng nhập
      if (this.authService.isLoggedIn()) {
        this.updateLikeStatus();
@@ -181,6 +188,47 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
         this.refreshPlaylists();
       }
     });
+  }
+
+  private loadComments(trackId: number | null) {
+  if (!trackId) return;
+
+  // Clear comment display interval cũ trước
+  this.stopCommentDisplay();
+
+  this.commentService.getCommentsByTrackId(trackId).subscribe({
+    next: (data) => {
+      this.comments = data;
+      this.startCommentDisplay();
+    },
+    error: (error) => {
+      console.error('Error fetching comments:', error);
+    }
+  });
+}
+
+  private startCommentDisplay() {
+    if (this.comments.length === 0) return;
+
+    this.currentCommentIndex = 0;
+    this.currentDisplayComment = this.comments[0];
+
+    this.commentDisplayInterval = setInterval(() => {
+      this.currentCommentIndex++;
+      if (this.currentCommentIndex >= this.comments.length) {
+        this.currentCommentIndex = 0;
+      }
+      this.currentDisplayComment = this.comments[this.currentCommentIndex];
+    }, 3000);
+  }
+
+  private stopCommentDisplay() {
+    this.currentCommentIndex = 0;
+    this.currentDisplayComment = null;
+    if (this.commentDisplayInterval) {
+      clearInterval(this.commentDisplayInterval);
+      this.commentDisplayInterval = null;
+    }
   }
 
   private updateLikeStatus() {
@@ -245,6 +293,7 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
 
                 // Cập nhật trạng thái like sau khi load track data
                 this.updateLikeStatus();
+
 
                 this.trackService.GetAlbumByArtist(this.artistDetail.userId).subscribe({
                   next: (albums) => {
@@ -316,9 +365,50 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCommentKeyPress(event: KeyboardEvent) {
+    if (event.key === 'Enter' && this.newCommentContent.trim()) {
+      this.createComment();
+    }
+  }
+
+  createComment() {
+    if (!this.newCommentContent.trim() || !this.trackId) {
+      return;
+    }
+
+    const commentDTO: CommentDTO = {
+      commentId: 0, // Sẽ được set bởi backend
+      writeBy: this.authService.getCurrentUserUserId()!,
+      writeDate: new Date().toISOString(),
+      trackId: this.trackId,
+      parentCommentId: null,
+      content: this.newCommentContent.trim()
+    };
+
+    this.commentService.addComment(commentDTO).subscribe({
+      next: (newComment) => {
+        this.comments.push(newComment);
+        this.toastr.success('Comment added successfully!');
+        // Restart comment display với comment mới
+        this.stopCommentDisplay();
+        this.startCommentDisplay();
+      },
+      error: (error) => {
+        this.toastr.error('Error adding comment.');
+        console.error('Error adding comment:', error);
+      }
+    });
+
+    console.log('CommentDTO created:', commentDTO);
+
+    // Clear input after creating comment
+    this.newCommentContent = '';
+  }
+
   ngOnDestroy() {
     if (this.playerSub) {
       this.playerSub.unsubscribe();
     }
+    this.stopCommentDisplay();
   }
 }
