@@ -1,5 +1,6 @@
 :host ::ng-deep input[type=range] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 4px;
   background: linear-gradient(to right, #111 0%, #111 var(--progress, 0%), #e5e7eb var(--progress, 0%), #e5e7eb 100%);
@@ -55,4 +56,58 @@
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+// Comment cycle: from bottom (fade in) → hold → to top (fade out)
+@keyframes commentCycle {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+.comment-cycle {
+  animation: commentCycle 3s ease-in-out;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+// Alternate keyframes and classes to ensure re-trigger on index change
+@keyframes commentCycleAlt {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+.cycle-even {
+  animation-name: commentCycle;
+}
+
+.cycle-odd {
+  animation-name: commentCycleAlt;
 }

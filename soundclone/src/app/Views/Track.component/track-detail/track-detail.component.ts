@@ -22,6 +22,11 @@ import { CommentDTO, CommentService } from '../../../Services/Comment/comment.se
   styleUrl: './track-detail.component.scss'
 })
 export class TrackDetailComponent implements OnInit, OnDestroy {
+  public showAllComments: boolean = false;
+
+  showComments() {
+    this.showAllComments = !this.showAllComments;
+  }
 
   onAddToPlaylist() {
     this.playlistService.GetPlaylistMenu().subscribe({

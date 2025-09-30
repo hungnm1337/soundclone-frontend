@@ -15,15 +15,15 @@
             <h3 class="font-bold">{{ trackDetail?.title }}</h3>
             <div class="text-sm opacity-60">{{artistDetail?.name}}</div>
             <div class="mt-3 text-gray-400 w-max flex justify-between items-center">
-              <!-- comment -->
+              <!-- keep rotating comment always visible as before -->
               @if (currentDisplayComment) {
-                <div class="flex items-center space-x-3 ml- mt-1 px-3 py-2 rounded-lg animate-fade-in">
-                  <img
-                    [src]="currentDisplayComment.writeByUser?.profilePictureUrl"
-                    [alt]="currentDisplayComment.writeByUser?.name"
-                    class="w-8 h-8 rounded-full object-cover">
-                  <span class="text-white text-sm">{{ currentDisplayComment.content }}</span>
-                </div>
+              <div class="flex items-center space-x-3 ml- mt-1 px-3 py-2 rounded-lg comment-cycle"
+                   [ngClass]="(currentCommentIndex % 2 === 0) ? 'cycle-even' : 'cycle-odd'"
+                   [attr.data-idx]="currentCommentIndex">
+                <img [src]="currentDisplayComment.writeByUser?.profilePictureUrl"
+                  [alt]="currentDisplayComment.writeByUser?.name" class="w-8 h-8 rounded-full object-cover">
+                <span class="text-white text-sm">{{ currentDisplayComment.content }}</span>
+              </div>
               }
             </div>
 
@@ -33,50 +33,61 @@
       <!-- button -->
       <div class="flex flex-row justify-center items-center gap-4 my-4">
         <button (click)="onPrevTrack()" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
-        <button (click)="seek({target: {value: playerCurrentTime - 5}})" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">-5s</button>
+        <button (click)="seek({target: {value: playerCurrentTime - 5}})"
+          class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">-5s</button>
         <button (click)="playPause()" class="text-gray-700 rounded-full p-2 hover:bg-gray-200 transition">
           <ng-container *ngIf="playerIsPlaying; else playIcon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
             </svg>
           </ng-container>
           <ng-template #playIcon>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
           </ng-template>
         </button>
-        <button (click)="seek({target: {value: playerCurrentTime + 5}})" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">+5s</button>
+        <button (click)="seek({target: {value: playerCurrentTime + 5}})"
+          class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">+5s</button>
         <button (click)="onNextTrack()" class="hover:bg-gray-200 text-gray-700 rounded-full p-2 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
         </button>
         <div class="flex items-center w-full mx-4">
           <span class="text-xs text-gray-400 w-10 text-right">{{ formatTime(playerCurrentTime) }}</span>
-          <input type="range" min="0" [max]="playerDuration" [value]="playerCurrentTime" (input)="seek($event)" class="mx-2 w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer" [style.--progress]="(playerDuration ? (playerCurrentTime / playerDuration) * 100 : 0) + '%'">
+          <input type="range" min="0" [max]="playerDuration" [value]="playerCurrentTime" (input)="seek($event)"
+            class="mx-2 w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            [style.--progress]="(playerDuration ? (playerCurrentTime / playerDuration) * 100 : 0) + '%'">
           <span class="text-xs text-gray-400 w-10 text-left">{{ formatTime(playerDuration) }}</span>
         </div>
       </div>
       <div class="flex flex-row justify-between w-full text-gray-400 text-sm mb-2">
         <span>{{ trackDetail?.playCount }} Views</span>
 
-       <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-between">
           <!-- Like button -->
           <div class="relative group">
-           <button
-            (click)="onLikeTrack()"
-            [ngClass]="{
+            <button (click)="onLikeTrack()" [ngClass]="{
               'flex items-center p-2 mr-2 rounded-full shadow transition': true,
               'bg-pink-200 text-pink-500': isLiked,
               'hover:bg-pink-200 hover:text-pink-500': isLiked,
               'hover:bg-gray-200 hover:text-gray-500': !isLiked
             }">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
               </svg>
               <span class="pl-2">{{likeTrackCount}} like</span>
-          </button>
+            </button>
 
             <!-- Tooltip hiển thị trên nút -->
             <span
@@ -87,11 +98,11 @@
 
           <!-- Add to playlist button -->
           <div class="relative group">
-            <button
-              (click)="onAddToPlaylist()"
+            <button (click)="onAddToPlaylist()"
               class="p-2 rounded-full hover:bg-blue-200 hover:text-blue-500 shadow transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
             </button>
             <!-- Tooltip hiển thị trên nút -->
@@ -108,17 +119,39 @@
         <span>{{ trackDetail?.uploadDate | date:'mediumDate' }}</span>
         <div>
           <!-- input nhập bình luận -->
-          <input
-            type="text"
-            placeholder="Add a comment..."
+          <input type="text" placeholder="Add a comment..."
             class="w-80 text-gray-800 px-3 py-1 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            [(ngModel)]="newCommentContent"
-            (keypress)="onCommentKeyPress($event)">
+            [(ngModel)]="newCommentContent" (keypress)="onCommentKeyPress($event)">
         </div>
         @if (trackDetail?.isPublic) {
-          <span class="text-gray-400 font-semibold">Public</span>
+        <span class="text-gray-400 font-semibold">Public</span>
         } @else {
-          <span class="text-gray-400 font-semibold">Private</span>
+        <span class="text-gray-400 font-semibold">Private</span>
+        }
+      </div>
+      <div class="flex flex-col gap-2 mt-4">
+        <div class="flex flex-row justify-center items-center">
+          <svg (click)="showComments()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="size-6 cursor-pointer">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+        @if (showAllComments) {
+        <div class="flex flex-col gap-3">
+          @for (c of comments; track $index) {
+          <div class="flex items-start gap-3 p-2 rounded-lg">
+            <img [src]="c.writeByUser?.profilePictureUrl" [alt]="c.writeByUser?.name"
+              class="w-10 h-10 rounded-full object-cover">
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <span class="text-gray-900 font-semibold text-sm">{{ c.writeByUser?.name }}</span>
+                <span class="text-xs text-gray-500">{{ c.writeDate | date:'dd/MMM/yyyy' }}</span>
+              </div>
+              <div class="text-gray-800 text-sm">{{ c.content }}</div>
+            </div>
+          </div>
+          }
+        </div>
         }
       </div>
     </div>
@@ -135,7 +168,8 @@
 
         </div>
         <div class="flex flex-row justify-center items-center gap-4 mt-6 w-full">
-          <button (click)="ViewProfile(artistDetail?.userId || 0)" class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
+          <button (click)="ViewProfile(artistDetail?.userId || 0)"
+            class="border-gray-800 border-2 w-full hover:bg-gray-300 font-semibold text-gray-700 px-4 py-2 rounded-lg transition-colors duration-300">
             View Profile
           </button>
         </div>
@@ -145,22 +179,20 @@
             Follow
           </button> -->
         </div>
+      </div>
     </div>
+
+
   </div>
+  <h1 class="text-xl mt-6 font-bold text-gray-900 mb-2">Other tracks from {{artistDetail?.name}}</h1>
 
-
-</div>
-<h1 class="text-xl mt-6 font-bold text-gray-900 mb-2">Other tracks from {{artistDetail?.name}}</h1>
-
-<div class="grid mt-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
-  @for (album of albums; track $index) {
-    <div (click)="OpenTrack(album.id)" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+  <div class="grid mt-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
+    @for (album of albums; track $index) {
+    <div (click)="OpenTrack(album.id)"
+      class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
       <div class="aspect-square overflow-hidden">
-        <img
-          [src]="album.imageUrl"
-          [alt]="album.title"
-          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-        >
+        <img [src]="album.imageUrl" [alt]="album.title"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
       </div>
       <div class="p-3">
         <h3 class="font-semibold text-gray-900 text-sm mb-1 truncate">{{ album.title }}</h3>
@@ -171,65 +203,71 @@
         </div>
       </div>
     </div>
-  }
-</div>
+    }
+  </div>
 
-<style>
-.hide-audio-play-pause::-webkit-media-controls-play-button,
-.hide-audio-play-pause::-webkit-media-controls-pause-button {
-  display: none !important;
-}
-.hide-audio-play-pause::-webkit-media-controls-panel {
-  justify-content: flex-end;
-}
-</style>
+  <style>
+    .hide-audio-play-pause::-webkit-media-controls-play-button,
+    .hide-audio-play-pause::-webkit-media-controls-pause-button {
+      display: none !important;
+    }
 
-@if (isPlaylistModalOpen) {
+    .hide-audio-play-pause::-webkit-media-controls-panel {
+      justify-content: flex-end;
+    }
+  </style>
+
+  @if (isPlaylistModalOpen) {
   <div class="fixed inset-0 z-50 flex items-center justify-center">
     <div class="absolute inset-0 bg-black bg-opacity-50" (click)="closePlaylistModal()"></div>
     <div class="relative bg-white rounded-xl shadow-2xl w-11/12 max-w-2xl max-h-[80vh] overflow-hidden">
-      <div class="text-white bg-gradient-to-r from-purple-300 to-blue-300 flex items-center justify-between border-b p-4">
+      <div
+        class="text-white bg-gradient-to-r from-purple-300 to-blue-300 flex items-center justify-between border-b p-4">
         <h2 class="text-lg font-semibold text-white ">Add to Playlist</h2>
         <button class="text-gray-500 hover:text-gray-700" (click)="closePlaylistModal()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            <path fill-rule="evenodd"
+              d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd" />
           </svg>
         </button>
       </div>
       <div class="p-4">
         @if (playlists.length === 0) {
-          <div class="text-center text-gray-500 py-8">No playlists found.</div>
+        <div class="text-center text-gray-500 py-8">No playlists found.</div>
         } @else {
-          <div class="flex flex-col space-y-3 max-h-80 overflow-y-auto pr-1">
-            @for (playlist of playlists; track $index) {
-              <div class="flex items-center gap-3 p-3 rounded-lg border hover:shadow transition">
-                <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
-                  <img [src]="playlist.picturePlaylistUrl" alt="playlist" class="w-full h-full object-cover">
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2">
-                    <p class="font-medium text-gray-800 truncate">{{ playlist.title }}</p>
-                    <span class="text-[10px] px-2 py-0.5 rounded-full">
-                      @if (!playlist.isPublish) {
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                    </svg>
-                      }
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <button class="px-3 py-1.5 text-sm text-gray-600  rounded-md hover:underline"
-                          (click)="addTrackToSelectedPlaylist(playlist.playlistId)">
-                    Add
-                  </button>
-                </div>
+        <div class="flex flex-col space-y-3 max-h-80 overflow-y-auto pr-1">
+          @for (playlist of playlists; track $index) {
+          <div class="flex items-center gap-3 p-3 rounded-lg border hover:shadow transition">
+            <div class="w-14 h-14 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
+              <img [src]="playlist.picturePlaylistUrl" alt="playlist" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="font-medium text-gray-800 truncate">{{ playlist.title }}</p>
+                <span class="text-[10px] px-2 py-0.5 rounded-full">
+                  @if (!playlist.isPublish) {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                  </svg>
+                  }
+                </span>
               </div>
-            }
+            </div>
+            <div>
+              <button class="px-3 py-1.5 text-sm text-gray-600  rounded-md hover:underline"
+                (click)="addTrackToSelectedPlaylist(playlist.playlistId)">
+                Add
+              </button>
+            </div>
           </div>
+          }
+        </div>
         }
       </div>
     </div>
   </div>
-}
-<app-footer></app-footer>
+  }
+  <app-footer></app-footer>
