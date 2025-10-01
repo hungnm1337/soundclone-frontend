@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ListDataService, ListPlaylistDTO, ListTrackDTO, ArtistDTO } from '../../../Services/ListData/list-data.service';
+import { ListDataService} from '../../../Services/ListData/list-data.service';
 import { ListTrackComponent } from "../list-track/list-track.component";
 import { ListPlaylistComponent } from "../list-playlist/list-playlist.component";
 import { ListArtistComponent } from "../list-artist/list-artist.component";
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { Subscription } from 'rxjs';
 import { FooterComponent } from "../footer/footer.component";
+import { ArtistDTO, ListPlaylistDTO, ListTrackDTO } from '../../../interfaces/listdata.interface';
 
 export type FilterType = 'all' | 'tracks' | 'playlists' | 'artists';
 

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PlaylistService, PlaylistMenu, PlaylistCreateInput } from '../../../Services/Playlist/playlist.service';
+import { PlaylistService} from '../../../Services/Playlist/playlist.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { AuthService } from '../../../Services/auth.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { PlaylistMenu, PlaylistCreateInput } from '../../../interfaces/playlist.interface';
 @Component({
   selector: 'app-menu',
   standalone: true,

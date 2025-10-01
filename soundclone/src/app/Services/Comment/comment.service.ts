@@ -1,18 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Artist } from '../Artist/artist.service';
 import { AuthService } from '../auth.service';
+import { CommentDTO } from '../../interfaces/comment.interface';
 
 
-export interface CommentDTO {
-  commentId: number;
-  writeBy: number;
-  writeByUser?: Artist;
-  writeDate: string;
-  trackId: number;
-  parentCommentId?: number | null;
-  content: string;
-}
+
 @Injectable({
   providedIn: 'root'
 })

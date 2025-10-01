@@ -1,24 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Artist, ArtistDetailDTO } from '../../interfaces/artist.interface';
 
-export interface ArtistDetailDTO{
-  userId: number;
-  name: string;
-  profilePictureUrl: string;
-  followingQuantity: number
-  followerQuantity: number;
-  bio:string;
-  dayOfBirth: Date;
-  email: string;
-  phoneNumber: string;
-}
-
-export interface Artist {
-  userId: number;
-  name: string;
-  profilePictureUrl: string;
-}
 @Injectable({
   providedIn: 'root'
 })

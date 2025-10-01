@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LikePlaylistInput } from '../../interfaces/likeplaylist.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -35,8 +36,3 @@ export class LikePlaylistService {
   }
 }
 
-
-export interface LikePlaylistInput {
-  playlistId: number;
-  userId: number;
-}

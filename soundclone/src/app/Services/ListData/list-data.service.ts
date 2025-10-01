@@ -1,25 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { ListTrackDTO, ListPlaylistDTO, ArtistDTO } from '../../interfaces/listdata.interface';
 
-export interface ListTrackDTO {
-  trackId: number;
-  title: string;
-  coverArtUrl: string;
-  artistName: string;
-}
-export interface ListPlaylistDTO {
-  playlistId: number;
-  numTrack: number;
-  title: string;
-  picturePlaylistUrl: string;
-  artistName: string;
-}
-export interface ArtistDTO {
-  userId: number;
-  name: string;
-  profilePictureUrl: string;
-}
 
 @Injectable({
   providedIn: 'root'

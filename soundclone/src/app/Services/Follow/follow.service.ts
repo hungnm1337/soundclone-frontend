@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { FollowDTO } from '../../interfaces/follow.interface';
 
-export interface FollowDTO {
-  id?: number;
-  artistId: number;
-  followerId: number;
-}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,10 +22,10 @@ export class FollowService {
       artistId: artistId,
       followerId: userId
     };
-     const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authService.getToken()}`
-        });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
 
     return this.http.put<boolean>(`${this.apiUrl}/toggle-follow-status`, followDto, { headers });
   }

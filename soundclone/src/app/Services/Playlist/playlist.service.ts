@@ -4,67 +4,15 @@ import { AuthService } from '../auth.service';
 import { Observable, Subject } from 'rxjs';
 import { UploadService } from '../UploadFile/upload.service';
 import { switchMap, tap } from 'rxjs/operators';
-export interface PlaylistMenu {
-  playlistId: number;
-  title: string;
-  picturePlaylistUrl: string;
-  trackQuantity: number;
-  isPublish: boolean;
-}
+import { AddTrackToPlaylist, PlaylistMenu, PlaylistDetailDTO, PlaylistCreateInput, PlaylistDTO, UpdatePlaylistDTO, DeletePlaylistDTO, RemoveTrackFromPlaylistDTO } from '../../interfaces/playlist.interface';
 
-export interface AddTrackToPlaylist {
-  playlistId: number;
-  trackId: number;
-}
-
-export interface PlaylistCreateInput {
-  title: string;
-  picturePlaylistUrl: File;
-  isPublish: boolean;
-}
-
- interface PlaylistDTO {
-  makeBy: number;
-  title: string;
-  picturePlaylistUrl: string;
-  isPublish: boolean;
-}
-
-export interface UpdatePlaylistDTO{
-  playlistId: number;
-  title: string;
-  picturePlaylistUrl: string;
-  isPublish: boolean;
-  userId: number;
-}
-
-export interface PlaylistDetailDTO {
-  playlistId: number;
-  title: string;
-  picturePlaylistUrl: string;
-  trackQuantity: number;
-  isPublish: boolean;
-  artistName : string;
-  artistId : number;
-}
-
-export interface DeletePlaylistDTO{
-  playlistId: number;
-  userId: number;
-}
-
-export interface RemoveTrackFromPlaylistDTO{
-  playlistId: number;
-  trackId: number;
-  userId: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaylistService {
 
-private apiUrl = 'https://localhost:7124/api/Playlist';
+  private apiUrl = 'https://localhost:7124/api/Playlist';
 
   private playlistUpdatedSubject = new Subject<void>();
   public playlistUpdated$ = this.playlistUpdatedSubject.asObservable();
@@ -137,17 +85,17 @@ private apiUrl = 'https://localhost:7124/api/Playlist';
   }
 
   deletePlaylist(playlistId: number): Observable<any> {
-  const userId = this.authService.getCurrentUserUserId();
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${this.authService.getToken()}`
-  });
-  const model : DeletePlaylistDTO = {
-    playlistId: playlistId,
-    userId: userId || 0
-  };
+    const userId = this.authService.getCurrentUserUserId();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    const model: DeletePlaylistDTO = {
+      playlistId: playlistId,
+      userId: userId || 0
+    };
 
-  return this.http.delete(`${this.apiUrl}/delete-playlist`, { headers, body: model });
+    return this.http.delete(`${this.apiUrl}/delete-playlist`, { headers, body: model });
   }
 
   RemoveTrackOfPlaylist(model: RemoveTrackFromPlaylistDTO): Observable<any> {

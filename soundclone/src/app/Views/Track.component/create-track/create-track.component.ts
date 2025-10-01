@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TrackService, CreateTrackInput } from '../../../Services/TrackService/track.service';
+import { TrackService } from '../../../Services/TrackService/track.service';
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CreateTrackInput } from '../../../interfaces/track.interface';
 @Component({
   selector: 'app-create-track',
   standalone: true,
@@ -12,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './create-track.component.html'
 })
 export class CreateTrackComponent implements OnInit {
-  constructor(private toastr: ToastrService, private router: Router, private authService: AuthService, private trackService: TrackService) {}
+  constructor(private toastr: ToastrService, private router: Router, private authService: AuthService, private trackService: TrackService) { }
   private fb = inject(NonNullableFormBuilder);
   form = this.fb.group({
     title: ['', Validators.required],
@@ -43,7 +44,7 @@ export class CreateTrackComponent implements OnInit {
   });
 
   ngOnInit() {
-    if(!this.authService.isLoggedIn()) {
+    if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
     }
     this.form.statusChanges.subscribe(status => {

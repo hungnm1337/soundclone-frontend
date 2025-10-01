@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
-import { AuthService, SignUpRequest } from "../../../Services/auth.service";
+import { AuthService } from "../../../Services/auth.service";
+import { SignUpRequest } from '../../../interfaces/auth.interface';
 
 interface SignUpData {
   name: string;

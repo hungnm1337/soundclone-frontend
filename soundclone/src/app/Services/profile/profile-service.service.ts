@@ -3,35 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { UploadService, UploadResponse } from '../UploadFile/upload.service';
 import { AuthService } from '../auth.service';
+import { UserProfile, ChangeProfilePicture, UserInformation } from '../../interfaces/profile.interface';
 
-export interface UserProfile {
-   userId: number;
-  name: string;
-  email: string;
-  dayOfBirth: string;
-  phoneNumber: string;
-  bio?: string;
-  profilePictureUrl?: string;
-  createAt: string;
-  updateAt: string;
-  username: string;
-  hashedPassword: string;
-  status: string;
-  roleId: number;
-}
- interface ChangeProfilePicture {
-  userId: number;
-  profilePictureUrl: string;
 
-}
-export interface UserInformation {
-  userId: number;
-  name: string;
-  email: string;
-  dayOfBirth: string;
-  phoneNumber: string;
-  bio?: string;
-}
 
 @Injectable({
   providedIn: 'root'

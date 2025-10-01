@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListTrackComponent } from "../list-track/list-track.component";
-import { ListDataService, ListPlaylistDTO, ListTrackDTO } from '../../../Services/ListData/list-data.service';
+import { ListDataService} from '../../../Services/ListData/list-data.service';
 import { ListPlaylistComponent } from "../list-playlist/list-playlist.component";
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { Subscription } from 'rxjs';
+import { ListPlaylistDTO, ListTrackDTO } from '../../../interfaces/listdata.interface';
 @Component({
   selector: 'app-liked',
   standalone: true,

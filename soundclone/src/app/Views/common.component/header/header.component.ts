@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, UserInfo } from '../../../Services/auth.service';
+import { AuthService } from '../../../Services/auth.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { UserInfo } from '../../../interfaces/auth.interface';
 
 interface Notification {
   id: number;

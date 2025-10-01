@@ -1,17 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { MonthlyCount, MonthlyAmount } from '../../interfaces/analysis.interface';
 
-export interface MonthlyCount {
-  year: number;
-  month: number;
-  count: number;
-}
-export interface MonthlyAmount {
-  year: number;
-  month: number;
-  amount: number;
-}
+
 @Injectable({
   providedIn: 'root'
 })

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReportService, ReplySystemReportDTO, SystemReportDTO, SystemReportDetailDTO } from '../../../Services/Report/report.service';
+import { ReportService} from '../../../Services/Report/report.service';
+import { ReplySystemReportDTO, SystemReportDetailDTO, SystemReportDTO } from '../../../interfaces/report.interface';
 
 @Component({
   selector: 'app-report-manage',

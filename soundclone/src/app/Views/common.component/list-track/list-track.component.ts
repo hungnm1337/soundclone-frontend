@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListTrackDTO } from '../../../Services/ListData/list-data.service';
 import { Router } from '@angular/router';
+import { ListTrackDTO } from '../../../interfaces/listdata.interface';
 
 @Component({
   selector: 'app-list-track',

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ArtistDetailDTO, ArtistService } from '../../../Services/Artist/artist.service';
-import { ListDataService, ListPlaylistDTO, ListTrackDTO } from '../../../Services/ListData/list-data.service';
+import { ArtistService } from '../../../Services/Artist/artist.service';
+import { ListDataService } from '../../../Services/ListData/list-data.service';
 import { ListTrackComponent } from "../../common.component/list-track/list-track.component";
 import { ListPlaylistComponent } from "../../common.component/list-playlist/list-playlist.component";
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../Services/auth.service';
 import { FollowService } from '../../../Services/Follow/follow.service';
 import { FooterComponent } from "../../common.component/footer/footer.component";
+import { ArtistDetailDTO } from '../../../interfaces/artist.interface';
+import { ListTrackDTO, ListPlaylistDTO } from '../../../interfaces/listdata.interface';
 
 @Component({
   selector: 'app-artist-profile',

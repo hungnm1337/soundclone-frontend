@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProfileServiceService, UserProfile, UserInformation } from '../../../Services/profile/profile-service.service';
+import { ProfileServiceService } from '../../../Services/profile/profile-service.service';
 import { UploadService } from '../../../Services/UploadFile/upload.service';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UserProfile, UserInformation } from '../../../interfaces/profile.interface';
 @Component({
   selector: 'app-profile',
   standalone: true,

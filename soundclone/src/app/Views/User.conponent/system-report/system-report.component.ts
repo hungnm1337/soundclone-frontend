@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReportService, SystemReportDTO, SystemReportDetailDTO } from '../../../Services/Report/report.service';
+import { ReportService} from '../../../Services/Report/report.service';
 import { AuthService } from '../../../Services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { SystemReportDetailDTO, SystemReportDTO } from '../../../interfaces/report.interface';
 
 @Component({
   selector: 'app-system-report',

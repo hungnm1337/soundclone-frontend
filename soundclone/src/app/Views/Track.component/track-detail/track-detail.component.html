@@ -18,8 +18,8 @@
               <!-- keep rotating comment always visible as before -->
               @if (currentDisplayComment) {
               <div class="flex items-center space-x-3 ml- mt-1 px-3 py-2 rounded-lg comment-cycle"
-                   [ngClass]="(currentCommentIndex % 2 === 0) ? 'cycle-even' : 'cycle-odd'"
-                   [attr.data-idx]="currentCommentIndex">
+                [ngClass]="(currentCommentIndex % 2 === 0) ? 'cycle-even' : 'cycle-odd'"
+                [attr.data-idx]="currentCommentIndex">
                 <img [src]="currentDisplayComment.writeByUser?.profilePictureUrl"
                   [alt]="currentDisplayComment.writeByUser?.name" class="w-8 h-8 rounded-full object-cover">
                 <span class="text-white text-sm">{{ currentDisplayComment.content }}</span>
@@ -131,13 +131,18 @@
       </div>
       <div class="flex flex-col gap-2 mt-4">
         <div class="flex flex-row justify-center items-center">
-          <svg (click)="showComments()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-            class="size-6 cursor-pointer">
+          <svg (click)="showComments()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" class="size-6 cursor-pointer">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
         </div>
         @if (showAllComments) {
         <div class="flex flex-col gap-3">
+          @if(comments.length === 0) {
+          <div class="text-center text-gray-500 py-8">
+           
+            No comments yet.</div>
+          } @else {
           @for (c of comments; track $index) {
           <div class="flex items-start gap-3 p-2 rounded-lg">
             <img [src]="c.writeByUser?.profilePictureUrl" [alt]="c.writeByUser?.name"
@@ -150,9 +155,10 @@
               <div class="text-gray-800 text-sm">{{ c.content }}</div>
             </div>
           </div>
-          }
+          }}
         </div>
         }
+
       </div>
     </div>
     <!-- Artist -->

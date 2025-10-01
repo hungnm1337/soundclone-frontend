@@ -2,47 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
-export interface AccountDTO {
-  userId: number;
-  name: string;
-  email: string;
-  username: string;
-  phoneNumber: string;
-  dayOfBirth: string; // DateOnly trong C# -> string (ISO date) trong Angular
-  bio?: string;
-  profilePictureUrl?: string;
-  createAt: string; // DateTime -> string (ISO date)
-  updateAt: string; // DateTime -> string (ISO date)
-  status: string;
-  roleId: number;
-  roleName: string;
-}
+import { AccountDTO, AccountListDTO, ChangeRoleDTO, RoleDTO } from '../../interfaces/account.interface';
 
-export interface AccountListDTO {
-  userId: number;
-  name: string;
-  email: string;
-  username: string;
-  status: string;
-  roleName: string;
-  createAt: string; // DateTime -> string
-}
-
-export interface AccountStatusUpdateDTO {
-  userId: number;
-  status: string; // "Active", "Blocked", "Suspended"
-}
-
-export interface RoleDTO {
-  roleId: number;
-  roleName: string;
-  roleDescription: string;
-}
-
-export interface ChangeRoleDTO {
-  roleId: number;
-  userId: number;
-}
 
 @Injectable({
   providedIn: 'root'

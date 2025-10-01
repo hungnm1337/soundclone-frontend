@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AnalysisService, MonthlyAmount, MonthlyCount } from '../../../Services/Admin/analysis.service';
+import { AnalysisService } from '../../../Services/Admin/analysis.service';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MonthlyCount, MonthlyAmount } from '../../../interfaces/analysis.interface';
 
 @Component({
   selector: 'app-system-analysis',

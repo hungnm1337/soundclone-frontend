@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LikeTrackInput } from '../../interfaces/liketrack.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +37,3 @@ export class LikeTrackService {
 }
 
 
-export interface LikeTrackInput {
-  trackId: number;
-  userId: number;
-}

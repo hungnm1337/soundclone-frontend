@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ArtistDTO } from '../../../Services/ListData/list-data.service';
+import { ArtistDTO } from '../../../interfaces/listdata.interface';
 
 @Component({
   selector: 'app-list-artist',

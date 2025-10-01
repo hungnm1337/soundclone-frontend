@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "../header/header.component";
-import { AuthService, LoginRequest, LoginResponse } from "../../../Services/auth.service";
+import { AuthService } from "../../../Services/auth.service";
 import { Router } from '@angular/router';
+import { LoginRequest, LoginResponse } from '../../../interfaces/auth.interface';
 
 @Component({
   selector: 'app-sign-in',

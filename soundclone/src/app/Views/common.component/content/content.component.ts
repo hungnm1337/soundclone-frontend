@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackService, Album } from '../../../Services/TrackService/track.service';
-import { Artist, ArtistService } from '../../../Services/Artist/artist.service';
+import { TrackService } from '../../../Services/TrackService/track.service';
+import { ArtistService } from '../../../Services/Artist/artist.service';
 import { Router } from '@angular/router';
 import { FooterComponent } from "../footer/footer.component";
 import { CommonModule } from '@angular/common';
+import { Album } from '../../../interfaces/track.interface';
+import { Artist } from '../../../interfaces/artist.interface';
 
 
 @Component({

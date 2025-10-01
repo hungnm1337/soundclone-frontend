@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ListPlaylistDTO } from '../../../Services/ListData/list-data.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ListPlaylistDTO } from '../../../interfaces/listdata.interface';
 
 @Component({
   selector: 'app-list-playlist',

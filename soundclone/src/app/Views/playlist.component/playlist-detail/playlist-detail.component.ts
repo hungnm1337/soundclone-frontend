@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ListTrackComponent } from "../../common.component/list-track/list-track.component";
 import { ConfirmDialogComponent } from "../../common.component/confirm-dialog/confirm-dialog.component";
-import { PlaylistService, PlaylistDetailDTO, UpdatePlaylistDTO, RemoveTrackFromPlaylistDTO } from '../../../Services/Playlist/playlist.service';
+import { PlaylistService } from '../../../Services/Playlist/playlist.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListTrackDTO } from '../../../Services/ListData/list-data.service';
 import { ListDataService } from '../../../Services/ListData/list-data.service';
 import { LikePlaylistService } from '../../../Services/LikePlaylist/like-playlist.service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -14,6 +13,8 @@ import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.
 import { Subscription } from 'rxjs';
 import { FooterComponent } from "../../common.component/footer/footer.component";
 import { ToastrService } from 'ngx-toastr';
+import { ListTrackDTO } from '../../../interfaces/listdata.interface';
+import { PlaylistDetailDTO, UpdatePlaylistDTO, RemoveTrackFromPlaylistDTO } from '../../../interfaces/playlist.interface';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,

@@ -1,18 +1,22 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TrackService, TrackDetail,Album } from '../../../Services/TrackService/track.service';
-import { ArtistService, ArtistDetailDTO } from '../../../Services/Artist/artist.service';
+import { TrackService } from '../../../Services/TrackService/track.service';
+import { ArtistService } from '../../../Services/Artist/artist.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlayerService, PlayerTrack } from '../../../Services/Player/player.service';
-import { LikeTrackInput, LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
-import { PlaylistMenu, PlaylistService, AddTrackToPlaylist } from '../../../Services/Playlist/playlist.service';
+import { LikeTrackService } from '../../../Services/LikeTrack/like-track.service';
+import { PlaylistService } from '../../../Services/Playlist/playlist.service';
 import { AuthService } from '../../../Services/auth.service';
 import { PlaylistStateService } from '../../../Services/Playlist/playlist-state.service';
 import { FooterComponent } from "../../common.component/footer/footer.component";
 import { ToastrService } from 'ngx-toastr';
-import { CommentDTO, CommentService } from '../../../Services/Comment/comment.service';
+import { CommentService } from '../../../Services/Comment/comment.service';
+import { ArtistDetailDTO } from '../../../interfaces/artist.interface';
+import { CommentDTO } from '../../../interfaces/comment.interface';
+import { PlaylistMenu, AddTrackToPlaylist } from '../../../interfaces/playlist.interface';
+import { Album, TrackDetail } from '../../../interfaces/track.interface';
 
 @Component({
   selector: 'app-track-detail',
@@ -25,6 +29,15 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   public showAllComments: boolean = false;
 
   showComments() {
+    this.commentService.getCommentsByTrackId(this.trackId!).subscribe({
+      next: (comments) => {
+        this.comments = comments;
+        this.showAllComments = !this.showAllComments;
+      },
+      error: (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    });
     this.showAllComments = !this.showAllComments;
   }
 
@@ -95,17 +108,17 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   private commentDisplayInterval: any;
 
   constructor(private route: ActivatedRoute,
-     private commentService: CommentService,
-     private toastr: ToastrService,
-     private trackService: TrackService,
-     private artistService: ArtistService,
-     private router: Router,
-     private playerService: PlayerService,
-     private likeTrackService: LikeTrackService,
-     private playlistService: PlaylistService,
-     private authService: AuthService,
-     private playlistStateService: PlaylistStateService
-   ) {
+    private commentService: CommentService,
+    private toastr: ToastrService,
+    private trackService: TrackService,
+    private artistService: ArtistService,
+    private router: Router,
+    private playerService: PlayerService,
+    private likeTrackService: LikeTrackService,
+    private playlistService: PlaylistService,
+    private authService: AuthService,
+    private playlistStateService: PlaylistStateService
+  ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.trackId = id ? +id : null;
@@ -157,14 +170,14 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
         console.error('Error fetching playlists:', error);
       }
     });
-         // Cập nhật like count (luôn gọi dù có đăng nhập hay không)
-     this.updateLikeTrackCount();
-     // Chỉ cập nhật like status khi user đã đăng nhập
-     if (this.authService.isLoggedIn()) {
-       this.updateLikeStatus();
-     } else {
-       this.isLiked = false; // Set mặc định false cho user chưa đăng nhập
-     }
+    // Cập nhật like count (luôn gọi dù có đăng nhập hay không)
+    this.updateLikeTrackCount();
+    // Chỉ cập nhật like status khi user đã đăng nhập
+    if (this.authService.isLoggedIn()) {
+      this.updateLikeStatus();
+    } else {
+      this.isLiked = false; // Set mặc định false cho user chưa đăng nhập
+    }
     this.playerSub = this.playerService.currentTrack$.subscribe(track => {
       if (track && this.trackDetail && track.id === this.trackDetail.trackId) {
         const audio = document.getElementById('global-audio') as HTMLAudioElement;
@@ -196,21 +209,21 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   }
 
   private loadComments(trackId: number | null) {
-  if (!trackId) return;
+    if (!trackId) return;
 
-  // Clear comment display interval cũ trước
-  this.stopCommentDisplay();
+    // Clear comment display interval cũ trước
+    this.stopCommentDisplay();
 
-  this.commentService.getCommentsByTrackId(trackId).subscribe({
-    next: (data) => {
-      this.comments = data;
-      this.startCommentDisplay();
-    },
-    error: (error) => {
-      console.error('Error fetching comments:', error);
-    }
-  });
-}
+    this.commentService.getCommentsByTrackId(trackId).subscribe({
+      next: (data) => {
+        this.comments = data;
+        this.startCommentDisplay();
+      },
+      error: (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    });
+  }
 
   private startCommentDisplay() {
     if (this.comments.length === 0) return;
@@ -334,13 +347,9 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
     const seconds = Math.floor(time % 60);
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
- OpenTrack(trackId: number) {
-    // Logic to open the track details, e.g., navigate to a track details page
-    console.log('Opening track with ID:', trackId);
-
+  OpenTrack(trackId: number) {
     this.router.navigate(['home/track-details', trackId]);
   }
-  // Xóa các hàm điều khiển audio nội bộ (onPlay, onPause, seekAudio, togglePlayPause)
 
   onPrevTrack() {
     // TODO: Implement logic to go to previous track
@@ -350,7 +359,7 @@ export class TrackDetailComponent implements OnInit, OnDestroy {
   onNextTrack() {
     const nextTrackIndex = this.albums[0].id;
     console.log('Next track index:', nextTrackIndex);
-   this.OpenTrack(nextTrackIndex);
+    this.OpenTrack(nextTrackIndex);
   }
 
   playPause() {

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccountDTO, AccountListDTO, AccountService, RoleDTO, ChangeRoleDTO } from '../../../Services/Admin/account.service';
+import { AccountService} from '../../../Services/Admin/account.service';
 import { ConfirmDialogComponent } from '../../common.component/confirm-dialog/confirm-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { AccountListDTO, RoleDTO, AccountDTO, ChangeRoleDTO } from '../../../interfaces/account.interface';
 @Component({
   selector: 'app-account-manage',
   standalone: true,
